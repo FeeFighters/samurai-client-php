@@ -7,7 +7,7 @@
 
     public function __construct ( $xml ) {
      
-echo $xml."\n\n";
+#echo $xml."\n\n";
  
       $root = simplexml_load_string( $xml );
       $root_node = $root->getName();

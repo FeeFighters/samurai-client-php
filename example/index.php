@@ -1,4 +1,38 @@
-<? require_once '../../samurai_credentials.php'; ?>
+<?
+
+  require_once '../../samurai_credentials.php';
+
+  if ( array_key_exists('payment_method_token',$_GET) ) {
+    try {
+
+      require_once '../Samurai.php';
+      Samurai::$processor_token = MY_SAMURAI_PROCESSOR_TOKEN;
+      Samurai::$merchant_key = MY_SAMURAI_MERCHANT_KEY;
+      Samurai::$merchant_password = MY_SAMURAI_MERCHANT_PASSWORD;
+
+      $payment_method_token = $_GET['payment_method_token'];
+      $samurai_payment_method = SamuraiPaymentMethod::fetchByToken( $payment_method_token );
+
+      if ( $samurai_payment_method->getIsSensitiveDataValid() ) {
+        printf( '<p style="color:green;">Successful payment method: %s</p>', $samurai_payment_method->getToken() );
+      } else {
+        printf( '<p style="color:red">Erroneous payment method: %s</p>', $samurai_payment_method->getToken() );
+        $samurai_messages = $samurai_payment_method->getMessages();
+        foreach ( $samurai_messages as $samurai_message )
+          printf( "<p style='padding-left:10px;color:red;'>%s - %s</p>", $samurai_message->getContext(), $samurai_message->getKey() );
+      }
+
+    } catch ( SamuraiException $e ) {
+
+      printf( "<p style='font-weight:bold'>Caught Samurai Exception: %s</p>\n", $e->getMessage() );
+      $samurai_messages = $e->getSamuraiMessages();
+      foreach ( $samurai_messages as $i => $samurai_message )
+        printf( "<p>%d. %s [ %s / %s / %s ]</p>\n", $i+1, $samurai_message->getMessage(), $samurai_message->getClass(), $samurai_message->getContext(), $samurai_message->getKey() );
+
+    }
+  }
+
+?>
 <style type="text/css">
   form { font-size: 18px; }
   fieldset { border: none; }
@@ -9,10 +43,10 @@
 
 <form action="https://samurai.feefighters.com/v1/payment_methods" method="POST">
   <fieldset>
-    <input name="redirect_url" type="hidden" value="<?= sprintf( 'http%s://%s%slib/redirect.php', $_SERVER['REMOTE_ADDR']==443?'s':null, $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ); ?>" />
+    <input name="redirect_url" type="hidden" value="<?= sprintf( 'http%s://%s%s', $_SERVER['REMOTE_ADDR']==443?'s':null, $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ); ?>" />
     <input name="merchant_key" type="hidden" value="<?= MY_SAMURAI_MERCHANT_KEY; ?>" />
 
-    <!-- Before populating the ‘custom’ parameter, remember to escape reserved xml characters 
+    <!-- Before populating the custom parameter, remember to escape reserved xml characters 
          like <, > and & into their safe counterparts like &lt;, &gt; and &amp; -->
     <input name="custom" type="hidden" value="Any value you want us to save with this payment method" />
 

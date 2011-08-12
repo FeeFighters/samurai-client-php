@@ -38,7 +38,7 @@
       $samurai_request = new SamuraiRequest( $url );
       $samurai_response = $samurai_request->send();
 
-      var_dump( $samurai_response );
+      #var_dump( $samurai_response );
 
       $oSamuraiTransaction = new SamuraiTransaction();
       return $oSamuraiTransaction();

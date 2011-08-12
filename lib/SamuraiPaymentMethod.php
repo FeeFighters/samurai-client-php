@@ -110,7 +110,7 @@
       $samurai_request = new SamuraiRequest( $url, 'POST' );
       $samurai_response = $samurai_request->send();
 
-      var_dump( $samurai_response );
+      #var_dump( $samurai_response );
 
     }
 
@@ -120,7 +120,7 @@
       $samurai_request = new SamuraiRequest( $url, 'POST' );
       $samurai_response = $samurai_request->send();
 
-      var_dump( $samurai_response );
+      #var_dump( $samurai_response );
 
     }
 
