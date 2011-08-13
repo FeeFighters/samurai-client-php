@@ -12,7 +12,6 @@
 
     const VERSION = '0.0.1';
 
-    public static $processor_token;
     public static $merchant_key;
     public static $merchant_password;
 
@@ -21,7 +20,9 @@
   require_once __DIR__.'/lib/SamuraiException.php';
   require_once __DIR__.'/lib/SamuraiMessage.php';
   require_once __DIR__.'/lib/SamuraiPaymentMethod.php';
+  require_once __DIR__.'/lib/SamuraiProcessor.php';
   require_once __DIR__.'/lib/SamuraiRequest.php';
   require_once __DIR__.'/lib/SamuraiResponse.php';
+  require_once __DIR__.'/lib/SamuraiTransaction.php';
 
 ?>

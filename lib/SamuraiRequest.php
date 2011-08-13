@@ -15,10 +15,12 @@
 
       $this->url = self::SAMURAI_ROOT.$url;
       $this->method = $method;
-      $thid->params = $params;
+      $this->params = $params;
+
     }
 
     public function send ( ) {
+
       $ch = curl_init();
       curl_setopt( $ch, CURLOPT_URL, $this->url );
       curl_setopt( $ch, CURLOPT_USERAGENT, "FeeFighter's Samurai PHP Client v".Samurai::VERSION );
@@ -28,10 +30,12 @@
       curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
       curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
       if ( $this->method != 'GET' ) {
-        $params = http_build_query( $params );
+
         curl_setopt( $ch, CURLOPT_POST, TRUE );
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query($this->params) );
+
       }
+
       $xml = curl_exec( $ch );
 
       $code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
@@ -40,6 +44,17 @@
 
       return new SamuraiResponse( $xml );
     }
+
+    /*private function buildPayload ( $params ) {
+      $xml = '';
+      foreach ( $this->params as $root => $vars ) {
+        $xml .= sprintf( '<%s>', $root );
+        foreach ( $vars as $key => $val )
+          $xml .= sprintf( "\n  <%s>%s</%s>", $key, $val, $key );
+        $xml .= sprintf( "\n</%s>", $root );
+      }
+      return $xml;
+    }*/
 
   }
 

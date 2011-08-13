@@ -7,7 +7,7 @@
 
     public function __construct ( $xml ) {
      
-#echo $xml."\n\n";
+echo $xml."\n\n";
  
       $root = simplexml_load_string( $xml );
       $root_node = $root->getName();
@@ -15,8 +15,13 @@
       if ( $root_node == 'error' )
         $this->handleError( $root );
 
+      list( $this->response, $this->messages ) = $this->parseResponse( $root );
+    }
+
+    private function parseResponse ( $root ) {
       $response = array();
       $messages = array();
+  
       foreach ( $root->children() as $node ) {
 #echo sprintf( "%s - %s - %s\n", $node->getName(), $node['type'], $node );
 
@@ -45,15 +50,26 @@
             break;
 
           default:
-            $response[ $node->getName() ] = (string) $node;
+
+            // @todo Be able to detect a response object dynamically
+            $objects = array( 'processor_response', 'payment_method' );
+            if ( in_array($node->getName(),$objects) ) {
+
+              list( $r, $m ) = $this->parseResponse( $node );
+              $response[ $node->getName() ] = $r;
+              $messages = array_merge( $messages, $m );
+
+            } else {
+
+              $response[ $node->getName() ] = (string) $node;
+
+            }
             break;
 
         }
       }
 
-      $this->response = $response;
-      $this->messages = $messages;
-
+      return array( $response, $messages );
     }
 
     public function getField ( $field ) {

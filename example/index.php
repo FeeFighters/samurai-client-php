@@ -2,35 +2,85 @@
 
   require_once '../../samurai_credentials.php';
 
-  // If the form is submitted and there are errors, handle them here
+  /**
+   * $errors will be populated with errors with the input of the credit card form
+   */
   $errors = array();
   $samurai_payment_method = null;
 
-  // If a payment_method_token is being passed in a redirect,
-  //  then process it and check that the sensitive data is valid
+  /**
+   * Process the payment_method_token if one is being passed via redirect
+   */
   if ( array_key_exists('payment_method_token',$_GET) ) {
     try {
 
-      // Include the Samurai library and initialize required settings
+      /**
+       * Include the Samurai library and initialize required settings
+       */
       require_once '../Samurai.php';
-      Samurai::$processor_token = MY_SAMURAI_PROCESSOR_TOKEN;
       Samurai::$merchant_key = MY_SAMURAI_MERCHANT_KEY;
       Samurai::$merchant_password = MY_SAMURAI_MERCHANT_PASSWORD;
 
-      // The payment_method_token will be passed as a $_GET variable, so retrieve it
-      //  and retrieve the associated payment method
+      /**
+       * Retrive the associated payment method by token
+       */
       $payment_method_token = $_GET['payment_method_token'];
       $samurai_payment_method = SamuraiPaymentMethod::fetchByToken( $payment_method_token );
 
       if ( $samurai_payment_method->getIsSensitiveDataValid() ) {
 
-        // If the sensitive data is successful, that means you have a valid payment_method to charge
+        /**
+         * The the sensitive data is valid, then a valid payment method has been stored
+         */
         printf( '<p style="color:green;">Successful payment method: %s</p>', $samurai_payment_method->getToken() );
+
+       
+        /**
+         * Create a transaction
+         */
+        $samurai_transaction = new SamuraiTransaction();
+        $samurai_transaction->setAmount( 20.00 );
+        $samurai_transaction->setCurrencyCode( 'USD' );
+        $samurai_transaction->setPaymentMethodToken( $samurai_payment_method->getToken() );
+
+        /**
+         * Optional values
+         *
+         * $samurai_transaction->setBillingReference( $billing_reference );
+         * $samurai_transaction->setCustomerReference( $customer_reference );
+         * $samurai_transaction->setDescriptor( $descriptor );
+         * $samurai_transaction->setCustom( $custom );
+         */
+
+        $samurai_processor = new SamuraiProcessor( MY_SAMURAI_PROCESSOR_TOKEN );
+
+        /**
+         * Example of a simple purchase
+         *
+         * $samurai_response = $samurai_transaction->purchase( $samurai_processor );
+         */
+        
+        /**
+         * Example of an authorization + capture
+         *
+         * $samurai_response = $samurai_transaction->authorize( $samurai_processor );
+         *
+         * $samurai_transaction->setAmount( 18.00 );
+         * $samurai_response = $samurai_transaction->capture();
+         */
+
+        /**
+         * Example of a credit
+         *
+         * $samurai_response = $samurai_transaction->credit( 9.00 );
+         */        
 
       } else {
 
-        // If the sensitive data is not successful, you will need to retrieve the erroneous fields
-        //  and indicate to the user that a problem needs to be fixed
+        /*
+         * If the sensitive data is not valid, you will need to retrieve the problematic fields
+         *  and indicate to the user that a problem needs to be fixed
+         */
 
         // @todo Remove line
         // printf( '<p style="color:red">Erroneous payment method: %s</p>', $samurai_payment_method->getToken() );
@@ -58,7 +108,9 @@
       foreach ( $samurai_messages as $i => $samurai_message )
         printf( "<p>%d. %s [ %s / %s / %s ]</p>\n", $i+1, $samurai_message->getMessage(), $samurai_message->getClass(), $samurai_message->getContext(), $samurai_message->getKey() );
 
-      // It is recommended that you log this error as something wrong has occurred.
+      /**
+       * It is recommended that you log this error as something wrong has occurred.
+       */
 
     }
   }
@@ -111,10 +163,10 @@
     </select>
 
     <label for="credit_card_card_number" class="<?= array_key_exists('card_number',$errors) ? 'error' : null; ?>">Card Number</label>
-    <input id="credit_card_card_number" name="credit_card[card_number]" type="text" class="<?= array_key_exists('card_number',$errors) ? 'error' : null; ?>" />
+    <input id="credit_card_card_number" name="credit_card[card_number]" type="text" class="<?= array_key_exists('card_number',$errors) ? 'error' : null; ?>" value="4111111111111111" />
 
     <label for="credit_card_verification_value" class="<?= array_key_exists('cvv',$errors) ? 'error' : null; ?>">Security Code</label>
-    <input id="credit_card_verification_value" name="credit_card[cvv]" type="text" class="<?= array_key_exists('cvv',$errors) ? 'error' : null; ?>" />
+    <input id="credit_card_verification_value" name="credit_card[cvv]" type="text" class="<?= array_key_exists('cvv',$errors) ? 'error' : null; ?>" value="123" />
 
     <label for="credit_card_month">Expiration Month</label>
     <? $months = array( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ); ?>
