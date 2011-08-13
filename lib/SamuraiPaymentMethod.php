@@ -138,7 +138,8 @@
       $samurai_payment_method->is_redacted             = $samurai_response->getField( 'is_redacted' );
       $samurai_payment_method->is_sensitive_data_valid = $samurai_response->getField( 'is_sensitive_data_valid' );
       $samurai_payment_method->last_four_digits        = $samurai_response->getField( 'last_four_digits' );
-      $samurai_payment_method->card_type               = $samurai_response->getField( 'first_name' );
+      $samurai_payment_method->card_type               = $samurai_response->getField( 'card_type' );
+      $samurai_payment_method->first_name              = $samurai_response->getField( 'first_name' );
       $samurai_payment_method->last_name               = $samurai_response->getField( 'last_name' );
       $samurai_payment_method->expiry_month            = $samurai_response->getField( 'expiry_month' );
       $samurai_payment_method->expiry_year             = $samurai_response->getField( 'expiry_year' );

@@ -22,7 +22,7 @@
 
         if ( $node->getName() == 'messages' ) {
           foreach ( $node->children() as $message )
-            $messages[] = new SamuraiMessage( (string)$message, $message['class'], $message['context'], $message['key'] );
+            $messages[] = new SamuraiMessage( (string)$message, $message['class'], $message['context'], (string)$message['key'] );
           continue;
         }
 
