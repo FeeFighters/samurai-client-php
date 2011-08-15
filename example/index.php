@@ -25,7 +25,7 @@
        * Retrive the associated payment method by token
        */
       $payment_method_token = $_GET['payment_method_token'];
-      $samurai_payment_method = SamuraiPaymentMethod::fetchByToken( $payment_method_token );
+      $samurai_payment_method = SamuraiPaymentMethod::fetchByToken( $payment_method_token, $samurai_response );
 
       if ( $samurai_payment_method->getIsSensitiveDataValid() ) {
 
@@ -95,7 +95,7 @@
 
         // @todo Remove line
         // printf( '<p style="color:red">Erroneous payment method: %s</p>', $samurai_payment_method->getToken() );
-        $samurai_messages = $samurai_payment_method->getMessages();
+        $samurai_messages = $samurai_response->getMessages();
   
         foreach ( $samurai_messages as $samurai_message ) {
 
