@@ -149,7 +149,7 @@
       return $samurai_response;
     }
 
-    public function credit ( $amount ) {
+    public function credit ( $amount, &$samurai_response=null ) {
       $params = array();
       $params['transaction'] = array();
       $params['transaction']['amount'] = $amount;
@@ -157,7 +157,6 @@
       $samurai_request = new SamuraiRequest( $url, 'POST', $params );
       $samurai_response = $samurai_request->send();
 
-/*
       $samurai_transaction = new SamuraiTransaction();
       $samurai_transaction->reference_id = $samurai_response->getField( 'reference_id' );
       $samurai_transaction->token = $samurai_response->getField( 'transaction_token' );
@@ -169,18 +168,13 @@
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
       $samurai_transaction->processor_token = $samurai_response->getField( 'processor_token' );
       $samurai_transaction->payment_method = $samurai_response->getField( 'payment_method' );
-  // @todo return samurai_response or samurai_transaction?
-*/
-
-      return $samurai_response;
+      return $samurai_transaction;
     }
 
-    public static function fetchById ( $reference_id ) {
+    public static function fetchById ( $reference_id, &$samurai_response ) {
       $url = sprintf( '/transactions/%s.xml', $reference_id );
       $samurai_request = new SamuraiRequest( $url );
       $samurai_response = $samurai_request->send();
-
-      #var_dump( $samurai_response );
   
       $samurai_transaction = new SamuraiTransaction();
       $samurai_transaction->reference_id = $samurai_response->getField( 'reference_id' );

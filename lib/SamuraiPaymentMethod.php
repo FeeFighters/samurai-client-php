@@ -22,8 +22,6 @@
     private $zip;
     private $country;
 
-    private $messages;
-
     public function getToken ( ) {
       return $this->token;
     }
@@ -100,31 +98,25 @@
       return $this->country;
     }
 
-    public function getMessages ( ) {
-      return $this->messages;
-    }
-
     public function retain ( ) {
-
       $url = sprintf( '/payment_methods/%s/retain.xml', $this->token );
       $samurai_request = new SamuraiRequest( $url, 'POST' );
       $samurai_response = $samurai_request->send();
-
-      #var_dump( $samurai_response );
-
+      $this->is_retained = $samurai_response->getField( 'is_retained' );
+      $this->is_redacted = $samurai_response->getField( 'is_redacted' );
+      return $samurai_response;
     }
 
     public function redact ( ) {
-
       $url = sprintf( '/payment_methods/%s/redact.xml', $this->token );
       $samurai_request = new SamuraiRequest( $url, 'POST' );
       $samurai_response = $samurai_request->send();
-
-      #var_dump( $samurai_response );
-
+      $this->is_retained = $samurai_response->getField( 'is_retained' );
+      $this->is_redacted = $samurai_response->getField( 'is_redacted' );
+      return $samurai_response;
     }
 
-    public static function fetchByToken ( $token ) {
+    public static function fetchByToken ( $token, &$samurai_response=null ) {
       $url = sprintf( '/payment_methods/%s.xml', $token );
       $samurai_request = new SamuraiRequest( $url );
       $samurai_response = $samurai_request->send();
@@ -150,8 +142,6 @@
       $samurai_payment_method->zip                     = $samurai_response->getField( 'zip' );
       $samurai_payment_method->country                 = $samurai_response->getField( 'country' );
   
-      $samurai_payment_method->messages                = $samurai_response->getMessages();
-
       return $samurai_payment_method;
     }
 

@@ -32,8 +32,19 @@
         /**
          * The the sensitive data is valid, then a valid payment method has been stored
          */
-        printf( '<p style="color:green;">Successful payment method: %s</p>', $samurai_payment_method->getToken() );
+        printf( '<p style="color:green;">Successful payment method: %s</p>'."<br />", $samurai_payment_method->getToken() );
 
+        /**
+         * Call retain on the payment method to store it in Samurai's vault
+         *
+         * $samurai_response = $samurai_payment_method->retain();
+         */
+       
+        /**
+         * Call redact on the payment method to store it in Samurai's vault
+         *
+         * $samurai_response = $samurai_payment_method->redact();
+         */
        
         /**
          * Create a transaction
@@ -89,10 +100,14 @@
         foreach ( $samurai_messages as $samurai_message ) {
 
           if ( $samurai_message->getContextCategory() == 'input' ) {
-            // If the context starts with 'input,' it is recommended to highlight the field to alert the customer
+
+            /**
+             * If the context starts with 'input,' it is recommended to highlight the field to alert the customer
+             */
             if ( ! array_key_exists($samurai_message->getContextType(),$errors) )
               $errors[ $samurai_message->getContextType() ] = array();
             $errors[ $samurai_message->getContextType() ][] = $samurai_message->getKey();
+
           }
 
           // @todo Remove line
@@ -103,10 +118,10 @@
 
     } catch ( SamuraiException $e ) {
 
-      printf( "<p style='font-weight:bold'>Caught Samurai Exception: %s</p>\n", $e->getMessage() );
+      printf( "<p style='font-weight:bold'>Caught Samurai Exception: %s</p><br />", $e->getMessage() );
       $samurai_messages = $e->getSamuraiMessages();
       foreach ( $samurai_messages as $i => $samurai_message )
-        printf( "<p>%d. %s [ %s / %s / %s ]</p>\n", $i+1, $samurai_message->getMessage(), $samurai_message->getClass(), $samurai_message->getContext(), $samurai_message->getKey() );
+        printf( "<p>%d. %s [ %s / %s / %s ]</p><br />", $i+1, $samurai_message->getMessage(), $samurai_message->getClass(), $samurai_message->getContext(), $samurai_message->getKey() );
 
       /**
        * It is recommended that you log this error as something wrong has occurred.
@@ -133,7 +148,7 @@
 
     <!-- Before populating the custom parameter, remember to escape reserved xml characters 
          like <, > and & into their safe counterparts like &lt;, &gt; and &amp; -->
-    <input name="custom" type="hidden" value="Any value you want us to save with this payment method" />
+    <input name="custom" type="hidden" value="" />
 
     <label for="credit_card_first_name">First name</label>
     <input id="credit_card_first_name" name="credit_card[first_name]" type="text" value="<?= $samurai_payment_method ? $samurai_payment_method->getFirstName() : null; ?>" />
@@ -158,6 +173,7 @@
 
     <label for="credit_card_card_type">Card Type</label>
     <select id="credit_card_card_type" name="credit_card[card_type]">
+      <option></option>
       <option value="visa" <?= $samurai_payment_method && $samurai_payment_method->getCardType() == 'visa' ? 'selected="selected"' : null; ?>>Visa</option>
       <option value="master"<?= $samurai_payment_method && $samurai_payment_method->getCardType() == 'master' ? 'selected="selected"' : null; ?>>MasterCard</option>
     </select>
