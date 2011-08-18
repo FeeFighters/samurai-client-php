@@ -31,10 +31,11 @@
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query($this->params) );
       }
       $xml = curl_exec( $ch );
+echo "\n\n------------------\n\n{$this->url}\n\n$xml\n\n";
 
       $code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-      if ( $code != 200 )
-        throw new SamuraiException( 'Unexpected HTTP code returned from Samurai: '.$code );
+      if ( $code == 500 )
+        throw new SamuraiException( 'Unexpected HTTP code 500 returned from Samurai' );
 
       return new SamuraiResponse( $xml );
     }

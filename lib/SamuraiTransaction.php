@@ -3,10 +3,9 @@
   class SamuraiTransaction {
 
     private $reference_id;
+    private $token;
     private $created_at;
     private $updated_at;
-
-    private $token;
     private $type;
     private $amount;
     private $currency_code;
@@ -16,12 +15,24 @@
     private $descriptor;
     private $custom;
 
+    public function getReferenceId ( ) {
+      return $this->reference_id;
+    }
+
     public function getToken ( ) {
       return $this->token;
     }
 
     public function setToken ( $token ) {
       $this->token = $token;
+    }
+
+    public function getCreatedAt ( ) {
+      return $this->created_at;
+    }
+
+    public function getUpdatedAt ( ) {
+      return $this->updated_at;
     }
 
     public function getAmount ( ) {
@@ -153,7 +164,7 @@
       $params = array();
       $params['transaction'] = array();
       $params['transaction']['amount'] = $amount;
-      $url = sprintf( '/transactions/%s/void.xml', $this->getToken() );
+      $url = sprintf( '/transactions/%s/credit.xml', $this->getToken() );
       $samurai_request = new SamuraiRequest( $url, 'POST', $params );
       $samurai_response = $samurai_request->send();
 
@@ -171,7 +182,7 @@
       return $samurai_transaction;
     }
 
-    public static function fetchById ( $reference_id, &$samurai_response ) {
+    public static function fetchByReferenceId ( $reference_id, &$samurai_response=null ) {
       $url = sprintf( '/transactions/%s.xml', $reference_id );
       $samurai_request = new SamuraiRequest( $url );
       $samurai_response = $samurai_request->send();
@@ -186,7 +197,7 @@
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
       $samurai_transaction->processor_token = $samurai_response->getField( 'processor_token' );
       $samurai_transaction->payment_method = $samurai_response->getField( 'payment_method' );
-      return $samurai_transaction();
+      return $samurai_transaction;
     }
 
   }

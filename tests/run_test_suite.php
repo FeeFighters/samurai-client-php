@@ -7,7 +7,7 @@
 
     static $payment_method_token;
     static $payment_method;
-    static $transaction;
+    static $transaction_reference_id;
 
     public static function setUpBeforeClass ( ) {
       require_once '../Samurai.php';
@@ -19,8 +19,8 @@
     public function testSubmitCreditCard ( ) {
 
       $params = array();
-      $params['credit_card[first_name]']    = 'Mister';
-      $params['credit_card[last_name]']     = 'Example';
+      $params['credit_card[first_name]']    = 'John';
+      $params['credit_card[last_name]']     = 'Smith';
       $params['credit_card[address_1]']     = '123 Main St';
       $params['credit_card[address_2]']     = 'Apt 1A';
       $params['credit_card[city]']          = 'Chicago';
@@ -64,6 +64,7 @@
 
       self::$payment_method->retain();
       $this->assertTrue( self::$payment_method->getIsRetained() );
+      $this->assertFalse( self::$payment_method->getIsRedacted() );
 
     }
   
@@ -71,23 +72,30 @@
 
       self::$payment_method->redact();
       $this->assertTrue( self::$payment_method->getIsRetained() );
+      $this->assertTrue( self::$payment_method->getIsRedacted() );
 
     }
  
     public function testSubmitPurchase ( ) {
-      $processor = new SamuraiProcessor( MY_SAMURAI_PROCESSOR_TOKEN );
-
       $transaction = new SamuraiTransaction();
-      $transaction->setAmount( 50.00 );
+      $transaction->setAmount( 60.00 );
       $transaction->setCurrencyCode( 'USD' );
       $transaction->setPaymentMethodToken( self::$payment_method->getToken() );
       $transaction->setBillingReference( 'Billing Reference 1234' );
       $transaction->setCustomerReference( 'Customer #1' );
 
+      $processor = new SamuraiProcessor( MY_SAMURAI_PROCESSOR_TOKEN );
       $samurai_response = $transaction->purchase( $processor );
 
-      self::$transaction = $transaction;
+      self::$transaction_reference_id = $transaction->getReferenceId();
+    }
 
+    public function testSubmitCredit ( ) {
+      $transaction = SamuraiTransaction::fetchByReferenceId( self::$transaction_reference_id );
+      $transaction->credit( 25.00, $samurai_response );
+      $processor_response = $samurai_response->getField( 'processor_response' );
+var_dump( $samurai_response );
+      $this->assertTrue( $processor_response['success'] );    
     }
 
   }

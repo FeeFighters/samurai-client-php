@@ -6,8 +6,6 @@
     private $messages;
 
     public function __construct ( $xml ) {
-     
-#echo $xml."\n\n";
  
       $root = simplexml_load_string( $xml );
       $root_node = $root->getName();
@@ -23,11 +21,10 @@
       $messages = array();
   
       foreach ( $root->children() as $node ) {
-#echo sprintf( "%s - %s - %s\n", $node->getName(), $node['type'], $node );
 
         if ( $node->getName() == 'messages' ) {
           foreach ( $node->children() as $message )
-            $messages[] = new SamuraiMessage( (string)$message, $message['class'], $message['context'], (string)$message['key'] );
+            $messages[] = new SamuraiMessage( (string)$message, $message['subclass'], $message['context'], (string)$message['key'] );
           continue;
         }
 
