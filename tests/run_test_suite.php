@@ -52,7 +52,7 @@
     }
 
     public function testRetrievePaymentMethod ( ) {
-      
+    
       $payment_method = SamuraiPaymentMethod::fetchByToken( self::$payment_method_token );
       $this->assertInstanceOf( 'SamuraiPaymentMethod', $payment_method );
       $this->assertTrue( $payment_method->getIsSensitiveDataValid() );
@@ -77,6 +77,7 @@
     }
  
     public function testSubmitPurchase ( ) {
+
       $transaction = new SamuraiTransaction();
       $transaction->setAmount( 60.00 );
       $transaction->setCurrencyCode( 'USD' );
@@ -90,12 +91,11 @@
       self::$transaction_reference_id = $transaction->getReferenceId();
     }
 
-    public function testSubmitCredit ( ) {
+    public function testVoidPurchase ( ) {
       $transaction = SamuraiTransaction::fetchByReferenceId( self::$transaction_reference_id );
-      $transaction->credit( 25.00, $samurai_response );
+      $samurai_response = $transaction->void();
       $processor_response = $samurai_response->getField( 'processor_response' );
-var_dump( $samurai_response );
-      $this->assertTrue( $processor_response['success'] );    
+      $this->assertTrue( $processor_response['success'] );
     }
 
   }

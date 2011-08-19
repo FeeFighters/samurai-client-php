@@ -91,22 +91,15 @@
       $this->custom = $custom;
     }
 
-    private function buildPayload ( ) {
+    public function purchase ( $samurai_processor ) {
       $params = array();
       $params['transaction'] = array();
+      $params['transaction']['type'] = 'purchase';
       $params['transaction']['amount'] = $this->amount;
       $params['transaction']['currency_code'] = $this->currency_code;
       $params['transaction']['payment_method_token'] = $this->payment_method_token; 
-      $params['transaction']['billing_reference'] = $this->billing_reference; 
-      $params['transaction']['customer_reference'] = $this->customer_reference; 
       $params['transaction']['descriptor'] = $this->descriptor; 
       $params['transaction']['custom'] = $this->custom;
-      return $params;
-    }
-
-    public function purchase ( $samurai_processor ) {
-      $params = $this->buildPayload();
-      $params['transaction']['type'] = 'purchase';
       $url = sprintf( '/processors/%s/purchase.xml', $samurai_processor->getToken() );
       $samurai_request = new SamuraiRequest( $url, 'POST', $params );
       $samurai_response = $samurai_request->send();
@@ -120,8 +113,14 @@
     }
 
     public function authorize ( $samurai_processor ) {
-      $params = $this->buildPayload();
+      $params = array();
+      $params['transaction'] = array();
       $params['transaction']['type'] = 'authorize';
+      $params['transaction']['amount'] = $this->amount;
+      $params['transaction']['currency_code'] = $this->currency_code;
+      $params['transaction']['payment_method_token'] = $this->payment_method_token; 
+      $params['transaction']['descriptor'] = $this->descriptor; 
+      $params['transaction']['custom'] = $this->custom;
       $url = sprintf( '/processors/%s/authorize.xml', $samurai_processor->getToken() );
       $samurai_request = new SamuraiRequest( $url, 'POST', $params );
       $samurai_response = $samurai_request->send();
@@ -162,8 +161,7 @@
 
     public function credit ( $amount, &$samurai_response=null ) {
       $params = array();
-      $params['transaction'] = array();
-      $params['transaction']['amount'] = $amount;
+      $params['amount'] = $amount;
       $url = sprintf( '/transactions/%s/credit.xml', $this->getToken() );
       $samurai_request = new SamuraiRequest( $url, 'POST', $params );
       $samurai_response = $samurai_request->send();

@@ -31,7 +31,6 @@
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query($this->params) );
       }
       $xml = curl_exec( $ch );
-echo "\n\n------------------\n\n{$this->url}\n\n$xml\n\n";
 
       $code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
       if ( $code == 500 )

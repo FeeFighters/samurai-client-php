@@ -48,7 +48,6 @@
 
           default:
 
-            // @todo Be able to detect a response object dynamically
             $objects = array( 'processor_response', 'payment_method' );
             if ( in_array($node->getName(),$objects) ) {
 
@@ -84,6 +83,7 @@
       $samurai_messages = array();
       foreach ( $messages as $message )
         $samurai_messages[] = new SamuraiMessage( $message, $message['subclass'], $message['context'], $message['key'] );
+print_r( $samurai_messages );
       throw new SamuraiException( 'An error occurred while processing the Samurai request', $samurai_messages );
     }
 

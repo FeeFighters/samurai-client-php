@@ -57,8 +57,6 @@
         /**
          * Optional values
          *
-         * $samurai_transaction->setBillingReference( $billing_reference );
-         * $samurai_transaction->setCustomerReference( $customer_reference );
          * $samurai_transaction->setDescriptor( $descriptor );
          * $samurai_transaction->setCustom( $custom );
          */
@@ -67,9 +65,8 @@
 
         /**
          * Example of a simple purchase
-         *
-         * $samurai_response = $samurai_transaction->purchase( $samurai_processor );
          */
+          $samurai_response = $samurai_transaction->purchase( $samurai_processor );
         
         /**
          * Example of an authorization + capture
@@ -81,9 +78,9 @@
          */
 
         /**
-         * Example of a credit
+         * Example of voiding a transaction
          *
-         * $samurai_response = $samurai_transaction->credit( 9.00 );
+         * $samurai_response = $samurai_transaction->void();
          */        
 
       } else {
@@ -93,8 +90,6 @@
          *  and indicate to the user that a problem needs to be fixed
          */
 
-        // @todo Remove line
-        // printf( '<p style="color:red">Erroneous payment method: %s</p>', $samurai_payment_method->getToken() );
         $samurai_messages = $samurai_response->getMessages();
   
         foreach ( $samurai_messages as $samurai_message ) {
@@ -110,8 +105,6 @@
 
           }
 
-          // @todo Remove line
-          // printf( "<p style='padding-left:10px;color:red;'>%s - %s</p>", $samurai_message->getContext(), $samurai_message->getKey() );
         }
 
       }
@@ -187,6 +180,7 @@
     <label for="credit_card_month">Expiration Month</label>
     <? $months = array( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ); ?>
     <select name="credit_card[expiry_month]">
+      <option></option>
     <? foreach ( $months as $i => $month ): $i++; ?>
       <option value="<?= $i; ?>" <?= $samurai_payment_method && $samurai_payment_method->getExpiryMonth() == $i ? 'selected="selected"' : null; ?>><? printf('%02d',$i); ?>. <?= $month; ?></option>
     <? endforeach; ?>
