@@ -83,7 +83,7 @@
       $this->descriptor = $descriptor;
     }
 
-    public function getCuston ( ) {
+    public function getCustom ( ) {
       return $this->custom;
     }
 
