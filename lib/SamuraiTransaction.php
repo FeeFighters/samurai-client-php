@@ -98,6 +98,8 @@
       $params['transaction']['amount'] = $this->amount;
       $params['transaction']['currency_code'] = $this->currency_code;
       $params['transaction']['payment_method_token'] = $this->payment_method_token; 
+      $params['transaction']['billing_reference'] = $this->billing_reference; 
+      $params['transaction']['customer_reference'] = $this->customer_reference;
       $params['transaction']['descriptor'] = $this->descriptor; 
       $params['transaction']['custom'] = $this->custom;
       $url = sprintf( '/processors/%s/purchase.xml', $samurai_processor->getToken() );
@@ -119,6 +121,8 @@
       $params['transaction']['amount'] = $this->amount;
       $params['transaction']['currency_code'] = $this->currency_code;
       $params['transaction']['payment_method_token'] = $this->payment_method_token; 
+      $params['transaction']['payment_method_token'] = $this->payment_method_token; 
+      $params['transaction']['billing_reference'] = $this->billing_reference; 
       $params['transaction']['descriptor'] = $this->descriptor; 
       $params['transaction']['custom'] = $this->custom;
       $url = sprintf( '/processors/%s/authorize.xml', $samurai_processor->getToken() );

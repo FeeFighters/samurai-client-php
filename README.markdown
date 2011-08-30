@@ -99,7 +99,7 @@ To retrieve the payment method and ensure that the sensitive data is valid:
 
     $payment_method = SamuraiPaymentMethod::fetchByToken( $_GET['payment_method_token'] );
     $payment_method->getIsSensitiveDataValid() # => true if the credit_card[card_number] passed checksum
-                                                       #    and the cvv (if included) is a number of 3 or 4 digits
+                                               #    and the cvv (if included) is a number of 3 or 4 digits
 
 **NB:** Samurai will not validate any non-sensitive data so it is up to your 
 application to perform any additional validation on the payment_method.
@@ -140,6 +140,12 @@ initiate a purchase (if your processor supports it):
     $samurai_transaction->setAmount( 20.00 );
     $samurai_transaction->setCurrencyCode( 'USD' );
 
+    // Optional metadata
+    $samurai_transaction->setDescriptor( 'Description of the charge' );
+    $samurai_transaction->setBillingReference( 'String reference for the transaction' );
+    $samurai_transaction->setCustomerReference( 'A customer identifying string' );
+    $samurai_transaction->setCustom( 'custom value which will be forwarded to the processor' );
+
     $samurai_transaction->setPaymentMethodToken( $samurai_payment_method->getToken() );
     $samurai_processor = new SamuraiProcessor( SAMURAI_PROCESSOR_TOKEN );
     $samurai_response = $samurai_transaction->purchase( $samurai_processor );
@@ -147,13 +153,6 @@ initiate a purchase (if your processor supports it):
 An authorization is created the same way: 
    
     $samurai_response = $samurai_transaction->authorize( $samurai_processor );
-
-You can specify options for either transaction type. Options is a hash that may contain:
-
-  * descriptor: a string description of the charge
-  * billing_reference: a string reference for the transaction
-  * customer_reference: a string that identifies the customer to your application
-  * custom: a custom value that Samurai will store but not forward to the processor
 
 ### Capturing an Authorization
 
@@ -176,5 +175,5 @@ merchant account.
 Once a captured authorization or purchase has settled, you need to credit the 
 transaction if you want to reverse a charge. 
 
-    $samurai_credit = $samurai_transaction->credit( 15.00, $samurai_response );
+    $samurai_credit_transaction = $samurai_transaction->credit( 15.00, $samurai_response );
 
