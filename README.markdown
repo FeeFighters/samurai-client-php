@@ -149,7 +149,7 @@ initiate a purchase (if your processor supports it):
     $samurai_transaction->setPaymentMethodToken( $samurai_payment_method->getToken() );
     $samurai_processor = new SamuraiProcessor( SAMURAI_PROCESSOR_TOKEN );
 
-    // To charge to payment method:
+    // To charge the payment method:
     $samurai_response = $samurai_transaction->purchase( $samurai_processor );
   
     // To authorize the charge: 
