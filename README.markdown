@@ -19,12 +19,12 @@ Configuration
 -------------
 
 You need to tell the client library what your Samurai keys are by defining constants:
-<?
-  define( 'SAMURAI_PROCESSOR_TOKEN', 'CHANGE TO YOUR PROCESSOR TOKEN' );
-  define( 'SAMURAI_MERCHANT_KEY', 'CHANGE TO YOUR MERCHANT KEY' );
-  define( 'SAMURAI_MERCHANT_PASSWORD', 'CHANGE TO YOUR MERCHANT PASSWORD' );
-  define( 'SAMURAI_LIB_DIRECTORY', dirname(__DIR__).'/samurai-client-php' );
-?>
+    <?
+      define( 'SAMURAI_PROCESSOR_TOKEN', 'CHANGE TO YOUR PROCESSOR TOKEN' );
+      define( 'SAMURAI_MERCHANT_KEY', 'CHANGE TO YOUR MERCHANT KEY' );
+      define( 'SAMURAI_MERCHANT_PASSWORD', 'CHANGE TO YOUR MERCHANT PASSWORD' );
+      define( 'SAMURAI_LIB_DIRECTORY', dirname(__DIR__).'/samurai-client-php' );
+    ?>
 
 Payment Methods
 ---------------
