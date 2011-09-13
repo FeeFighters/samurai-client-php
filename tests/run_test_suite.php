@@ -36,7 +36,7 @@
       $params['merchant_key']               = SAMURAI_MERCHANT_KEY;
 
       $ch = curl_init();
-      curl_setopt( $ch, CURLOPT_URL, 'https://samurai.feefighters.com/v1/payment_methods' );
+      curl_setopt( $ch, CURLOPT_URL, 'https://api.samurai.feefighters.com/v1/payment_methods' );
       curl_setopt( $ch, CURLOPT_USERAGENT, "FeeFighter's Samurai PHP Client v".Samurai::VERSION." Test Suite" );
       curl_setopt( $ch, CURLOPT_HEADER, TRUE );
       curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );

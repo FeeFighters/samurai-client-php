@@ -2,7 +2,7 @@
 
   class SamuraiRequest {
 
-    const SAMURAI_ROOT = 'https://samurai.feefighters.com/v1';
+    const SAMURAI_ROOT = 'https://api.samurai.feefighters.com/v1';
 
     private $url;
     private $method;
