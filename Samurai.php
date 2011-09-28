@@ -1,4 +1,4 @@
-<?
+<?php
 
   /**
    * FeeFighter's Samurai payment gateway API client

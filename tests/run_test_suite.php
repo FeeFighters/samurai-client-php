@@ -11,7 +11,7 @@
 
     public static function setUpBeforeClass ( ) {
       require_once '../Samurai.php';
-      require_once '../../samurai_credentials.php';
+      require_once '../samurai_credentials.php';
       Samurai::$merchant_key = SAMURAI_MERCHANT_KEY;
       Samurai::$merchant_password = SAMURAI_MERCHANT_PASSWORD;
     }
