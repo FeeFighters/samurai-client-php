@@ -1,5 +1,5 @@
 #!/usr/bin/env phpunit
-<?
+<?php
 
   require_once 'PHPUnit/Autoload.php';
 

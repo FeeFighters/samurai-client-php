@@ -1,4 +1,4 @@
-<?
+<?php
 
   class SamuraiException extends Exception {
 
