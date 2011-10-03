@@ -17,6 +17,11 @@
 
   }
 
+  if ( defined('SAMURAI_MERCHANT_KEY') )
+    Samurai::$merchant_key = SAMURAI_MERCHANT_KEY;
+  if ( defined('SAMURAI_MERCHANT_PASSWORD') )
+    Samurai::$merchant_password = SAMURAI_MERCHANT_PASSWORD;
+
   require_once __DIR__.'/lib/SamuraiException.php';
   require_once __DIR__.'/lib/SamuraiMessage.php';
   require_once __DIR__.'/lib/SamuraiPaymentMethod.php';
