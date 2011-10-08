@@ -273,8 +273,9 @@ _Documentation coming soon._
 
 ## Error Messages
 
-The PaymentMethod and Transaction classes both load errors automatically from the Samurai API, adding them to an Errors class that uses the same API as an ActiveRecord model.
+The PaymentMethod and Transaction classes both load errors automatically from the Samurai API, adding them to the `SamuraiResponse` class.  The messages can be queried via `getMessages`, which will return an array of `SamuraiMessage` objects.
 
 ```php
 print_r($response->getMessages());
+print_r($response->getMessages()[0]->getMessage);
 ```
