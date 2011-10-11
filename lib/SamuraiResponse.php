@@ -24,7 +24,7 @@
 
         if ( $node->getName() == 'messages' ) {
           foreach ( $node->children() as $message )
-            $messages[] = new SamuraiMessage( (string)$message, $message['subclass'], $message['context'], (string)$message['key'] );
+            $messages[] = new SamuraiMessage( (string)$message, (string)$message['subclass'], (string)$message['context'], (string)$message['key'] );
           continue;
         }
 
@@ -82,8 +82,7 @@
       $messages = $root->xpath( 'messages/message' );
       $samurai_messages = array();
       foreach ( $messages as $message )
-        $samurai_messages[] = new SamuraiMessage( $message, $message['subclass'], $message['context'], $message['key'] );
-print_r( $samurai_messages );
+        $samurai_messages[] = new SamuraiMessage( (string)$message, (string)$message['subclass'], (string)$message['context'], (string)$message['key'] );
       throw new SamuraiException( 'An error occurred while processing the Samurai request', $samurai_messages );
     }
 
