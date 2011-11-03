@@ -98,6 +98,10 @@
       return $this->country;
     }
 
+    public function getSandbox ( ) {
+      return $this->sandbox;
+    }
+
     public function retain ( ) {
       $url = sprintf( '/payment_methods/%s/retain.xml', $this->token );
       $samurai_request = new SamuraiRequest( $url, 'POST' );
@@ -141,6 +145,7 @@
       $samurai_payment_method->state                   = $samurai_response->getField( 'state' );
       $samurai_payment_method->zip                     = $samurai_response->getField( 'zip' );
       $samurai_payment_method->country                 = $samurai_response->getField( 'country' );
+      $samurai_payment_method->sandbox                 = $samurai_response->getField( 'sandbox' );
   
       return $samurai_payment_method;
     }
