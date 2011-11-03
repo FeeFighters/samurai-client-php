@@ -6,7 +6,6 @@
     private $messages;
 
     public function __construct ( $xml ) {
- 
       $root = simplexml_load_string( $xml );
       $root_node = $root->getName();
 
@@ -76,6 +75,10 @@
 
     public function getMessages ( ) {
       return $this->messages;
+    }
+
+    public function getSuccess() {
+      return $this->getField('success');
     }
 
     private function handleError ( $root ) {
