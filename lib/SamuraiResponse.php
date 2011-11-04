@@ -48,7 +48,7 @@
           default:
 
             $objects = array( 'processor_response', 'payment_method' );
-            if ( in_array($node->getName(),$objects) ) {
+            if ( in_array($node->getName(), $objects) ) {
 
               list( $r, $m ) = $this->parseResponse( $node );
               $response[ $node->getName() ] = $r;

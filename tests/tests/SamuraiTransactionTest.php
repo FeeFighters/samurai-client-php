@@ -1,7 +1,7 @@
 <?php
   require_once 'PHPUnit/Autoload.php';
 
-  class SamuraiTestTransaction extends PHPUnit_Framework_TestCase {
+  class SamuraiTransactionTest extends PHPUnit_Framework_TestCase {
 
     public static function setUpBeforeClass ( ) {
       require_once '../Samurai.php';
@@ -59,8 +59,9 @@
       $messages = $samurai_response->getMessages();
       $error = $messages[0];
       $this->assertEquals( $error->getClass(), 'error' );
-      $this->assertEquals( $error->getContext(), 'input.card_number' );      
-      $this->assertEquals( $error->getKey(), 'invalid' );            
+      $this->assertEquals( $error->getContext(), 'input.card_number' );
+      $this->assertEquals( $error->getKey(), 'invalid' );
+      
     }
 
     public function testExpiredCardPurchase ( ) {

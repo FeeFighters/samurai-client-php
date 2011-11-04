@@ -1,7 +1,7 @@
 <?php
   require_once 'PHPUnit/Autoload.php';
 
-  class SamuraiTestPaymentMethod extends PHPUnit_Framework_TestCase {
+  class SamuraiPaymentMethodTest extends PHPUnit_Framework_TestCase {
 
     public static function setUpBeforeClass ( ) {
       require_once '../Samurai.php';
