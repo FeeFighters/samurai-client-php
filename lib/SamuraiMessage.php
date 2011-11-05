@@ -40,7 +40,7 @@
       return $this->key;
     }
 
-    public $descriptions = Array(
+    public static $descriptions = Array(
       /* Transaction Responses */
       'info processor.transaction success'      => 'The transaction was successful.',
       'error processor.transaction declined'    => 'The card was declined.',
