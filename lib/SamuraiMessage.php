@@ -64,6 +64,7 @@
       'error processor.network_gateway communication_error'     => 'There was a fatal communication error.',
       'error processor.network_gateway unresponsive'            => 'The processing network is temporarily unavailable.',
       'error processor.network_gateway merchant_invalid'        => 'The merchant number is not on file.',
+      'error processor.transaction duplicate'		=> 'A duplicate transaction has been detected. If you meant to purchase again, please refresh before purchasing.',
 
       /* AVS Responses */
       'info processor.avs_result_code 0'  => 'No response.',
