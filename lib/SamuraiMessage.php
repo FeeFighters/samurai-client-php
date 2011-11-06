@@ -85,7 +85,7 @@
 
     public function getDescription ( ) {
       $_descriptionKey = $this->getClass() . ' ' . $this->getContext() . ' ' . $this->getKey();
-      return isset($this->descriptions[$_descriptionKey]) ? $this->descriptions[$_descriptionKey] : '';
+      return isset(self::$descriptions[$_descriptionKey]) ? self::$descriptions[$_descriptionKey] : '';
     }
 
   }
