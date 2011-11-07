@@ -49,6 +49,8 @@
       'error input.card_number invalid'         => 'The card number was invalid.',
       'error input.expiry_month invalid'        => 'The expiration date month was invalid, or prior to today.',
       'error input.expiry_year invalid'         => 'The expiration date year was invalid, or prior to today.',
+      'error input.expiry_month expired'        => 'The expiration date month was incorrect, or prior to today.',
+      'error input.expiry_year expired'         => 'The expiration date year was incorrect, or prior to today.',
       'error processor.pin invalid'             => 'The PIN number is incorrect.',
       'error input.amount invalid'              => 'The transaction amount was invalid.',
       'error processor.transaction declined_insufficient_funds' => 'The transaction was declined due to insufficient funds.',
