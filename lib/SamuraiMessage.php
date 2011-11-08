@@ -83,6 +83,7 @@
       /* CVV Responses */
       'error input.cvv declined' => 'The CVV code was not correct.',
       'error input.cvv declined' => 'The CVV code was invalid.',
+      'error input.cvv too_long' => 'The CVV code was too long.',
     );
 
     public function getDescription ( ) {
