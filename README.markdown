@@ -11,7 +11,7 @@ Installation
 
 Install Samurai by cloning this github repository
 
-    git clone git@github.com:FeeFighters/samurai-client-php.git
+    git clone git://github.com/FeeFighters/samurai-client-php.git
 
 Otherwise, download the .tar.gz or .zip archive
 
