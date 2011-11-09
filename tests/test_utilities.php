@@ -44,8 +44,8 @@ class SamuraiTestSuite {
     $transaction->setBillingReference( 'Billing Reference 1234' );
     $transaction->setCustomerReference( 'Customer #1' );
     $processor = new SamuraiProcessor( SAMURAI_PROCESSOR_TOKEN );
-    $response = $transaction->purchase( $processor );    
-    return SamuraiTransaction::fetchByReferenceId( $response->getField('reference_id') );
+    $new_transaction = $transaction->purchase( $processor );    
+    return $new_transaction;
   }  
 
 }
