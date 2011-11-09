@@ -6,7 +6,7 @@
     public static function setUpBeforeClass ( ) {
       require_once '../Samurai.php';
       require_once 'test_samurai_credentials.php';
-      require_once 'test_utilities.php';      
+      require_once 'test_utilities.php';
       Samurai::$merchant_key = SAMURAI_MERCHANT_KEY;
       Samurai::$merchant_password = SAMURAI_MERCHANT_PASSWORD;
     }
@@ -15,7 +15,7 @@
       SamuraiTestSuite::createPaymentMethod();
     }
 
-    public function testRetrievePaymentMethod ( ) {    
+    public function testRetrievePaymentMethod ( ) {
       $payment_method = SamuraiTestSuite::createPaymentMethod();
       $payment_method = SamuraiPaymentMethod::fetchByToken( $payment_method->getToken() );
       $this->assertInstanceOf( 'SamuraiPaymentMethod', $payment_method );
@@ -28,7 +28,7 @@
       $this->assertTrue(  $payment_method->getIsRetained() );
       $this->assertFalse( $payment_method->getIsRedacted() );
     }
-  
+
     public function testRedactPaymentMethod ( ) {
       $payment_method = SamuraiTestSuite::createPaymentMethod();
       $payment_method->redact();

@@ -18,7 +18,7 @@
     private function parseResponse ( $root ) {
       $response = array();
       $messages = array();
-  
+
       foreach ( $root->children() as $node ) {
 
         if ( $node->getName() == 'messages' ) {
@@ -32,11 +32,11 @@
           case 'boolean':
             $response[ $node->getName() ] = $node == 'true';
             break;
-      
+
           case 'integer':
             $response[ $node->getName() ] = (integer) $node;
             break;
-      
+
           case 'datetime':
             $response[ $node->getName() ] = new DateTime( $node );
             break;
