@@ -159,7 +159,6 @@
       $samurai_transaction = new SamuraiTransaction();
       $samurai_transaction->reference_id = $samurai_response->getField( 'reference_id' );
       $samurai_transaction->token = $samurai_response->getField( 'transaction_token' );
-      $samurai_transaction->type = $samurai_response->getField( 'transaction_type' );
       $samurai_transaction->created_at = $samurai_response->getField( 'created_at' );
       $samurai_transaction->success = $samurai_response->getField( 'success' );      
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
