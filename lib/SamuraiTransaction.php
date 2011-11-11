@@ -8,10 +8,22 @@
     public $billing_reference;
     public $customer_reference;
     public $descriptor;
+	public $success;
     public $custom;
+    public $token;
+    public $reference_id;
+    public $transaction_type;
+    public $created_at;
+    public $processor_token;
+    public $payment_method;
+    public $processor_response;
 
     public function getReferenceId ( ) {
       return $this->reference_id;
+    }
+    
+    public function setReferenceId ( $reference_id ) {
+      $this->reference_id = $reference_id;
     }
 
     public function getToken ( ) {
@@ -25,9 +37,17 @@
     public function getCreatedAt ( ) {
       return $this->created_at;
     }
+    
+    public function setCreatedAt ( $created_at ) {
+      $this->created_at = $created_at;
+    }
 
     public function getUpdatedAt ( ) {
       return $this->updated_at;
+    }
+    
+    public function setUpdatedAt ( $updated_at ) {
+      $this->updated_at = $updated_at;
     }
 
     public function getAmount ( ) {
@@ -92,6 +112,46 @@
 
     public function setProcessorResponse ( $response ) {
       $this->processor_response = $processor_response;
+    }
+    
+    public function getSuccess ( ) {
+      return $this->success;
+    }
+
+    public function setSuccess ( $success ) {
+      $this->success = $success;
+    }
+    
+    public function getTransactionType ( ) {
+      return $this->transaction_type;
+    }
+
+    public function setTransactionType ( $transaction_type ) {
+      $this->transaction_type = $transaction_type;
+    }
+    
+    public function getTransactionToken ( ) {
+      return $this->transaction_token;
+    }
+
+    public function setTransactionToken ( $transaction_token ) {
+      $this->transaction_token = $transaction_token;
+    }
+    
+    public function getProcessorToken ( ) {
+      return $this->processor_token;
+    }
+
+    public function setProcessorToken ( $processor_token ) {
+      $this->processor_token = $processor_token;
+    }
+    
+    public function getPaymentMethod ( ) {
+      return $this->payment_method;
+    }
+
+    public function setPaymentMethod ( $payment_method ) {
+      $this->payment_method = $payment_method;
     }
 
 
