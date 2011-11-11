@@ -2,9 +2,6 @@
 
   class SamuraiResponse {
 
-    private $response;
-    private $messages;
-
     public function __construct ( $xml ) {
       $root = simplexml_load_string( $xml );
       $root_node = $root->getName();

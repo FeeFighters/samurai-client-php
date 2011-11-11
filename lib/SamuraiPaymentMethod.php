@@ -2,26 +2,6 @@
 
   class SamuraiPaymentMethod {
 
-    private $token;
-    private $created_at;
-    private $updated_at;
-    private $custom;
-    private $is_retained;
-    private $is_redacted;
-    private $is_sensitive_data_valid;
-    private $last_four_digits;
-    private $card_type;
-    private $first_name;
-    private $last_name;
-    private $expiry_month;
-    private $expiry_year;
-    private $address_1;
-    private $address_2;
-    private $city;
-    private $state;
-    private $zip;
-    private $country;
-
     public function getToken ( ) {
       return $this->token;
     }

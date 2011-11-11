@@ -3,9 +3,6 @@
   class SamuraiMessage {
 
     private $message;
-    private $class;
-    private $context;
-    private $key;
 
     public function __construct ( $message, $class, $context, $key ) {
       $this->message = $message;

@@ -2,18 +2,13 @@
 
   class SamuraiTransaction {
 
-    private $reference_id;
-    private $token;
-    private $created_at;
-    private $updated_at;
-    private $type;
-    private $amount;
-    private $currency_code;
-    private $payment_method_token;
-    private $billing_reference;
-    private $customer_reference;
-    private $descriptor;
-    private $custom;
+    public $amount;
+    public $currency_code;
+    public $payment_method_token;
+    public $billing_reference;
+    public $customer_reference;
+    public $descriptor;
+    public $custom;
 
     public function getReferenceId ( ) {
       return $this->reference_id;
@@ -106,6 +101,7 @@
       $samurai_transaction->token = $samurai_response->getField( 'transaction_token' );
       $samurai_transaction->type = $samurai_response->getField( 'transaction_type' );
       $samurai_transaction->created_at = $samurai_response->getField( 'created_at' );
+      $samurai_transaction->success = $samurai_response->getField( 'success' );      
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
       $samurai_transaction->custom = $samurai_response->getField( 'custom' );
       $samurai_transaction->custom = $samurai_response->getField( 'billing_reference' );

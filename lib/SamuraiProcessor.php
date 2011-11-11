@@ -2,8 +2,6 @@
 
   class SamuraiProcessor {
 
-    private $token;
-
     public function __construct ( $token ) {
       $this->token = $token;
     }
