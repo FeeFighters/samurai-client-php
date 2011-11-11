@@ -21,6 +21,10 @@
     public function getReferenceId ( ) {
       return $this->reference_id;
     }
+    
+    public function setReferenceId ( $reference_id ) {
+      $this->reference_id = $reference_id;
+    }
 
     public function getToken ( ) {
       return $this->token;
@@ -132,14 +136,6 @@
 
     public function setTransactionToken ( $transaction_token ) {
       $this->transaction_token = $transaction_token;
-    }
-    
-    public function getReferenceId ( ) {
-      return $this->reference_id;
-    }
-
-    public function setReferenceId ( $reference_id ) {
-      $this->reference_id = $reference_id;
     }
     
     public function getProcessorToken ( ) {
