@@ -104,9 +104,9 @@
       $samurai_transaction->success = $samurai_response->getField( 'success' );      
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
       $samurai_transaction->custom = $samurai_response->getField( 'custom' );
-      $samurai_transaction->custom = $samurai_response->getField( 'billing_reference' );
-      $samurai_transaction->custom = $samurai_response->getField( 'customer_reference' );
-      $samurai_transaction->custom = $samurai_response->getField( 'descriptor' );
+      $samurai_transaction->billing_reference = $samurai_response->getField( 'billing_reference' );
+      $samurai_transaction->customer_reference = $samurai_response->getField( 'customer_reference' );
+      $samurai_transaction->descriptor = $samurai_response->getField( 'descriptor' );
       $samurai_transaction->amount = $samurai_response->getField( 'amount' );
       $samurai_transaction->transaction_type = $samurai_response->getField( 'transaction_type' );
       $samurai_transaction->processor_token = $samurai_response->getField( 'processor_token' );
