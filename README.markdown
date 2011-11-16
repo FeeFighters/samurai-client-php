@@ -30,4 +30,4 @@ You need to tell the client library what your Samurai keys are by defining const
 Samurai API Reference
 ---------------------
 
-See the [API Reference](https://samurai.feefighters.com/developers/api-reference/php) for a full explanation of how this library works with the Samurai API.
+See the [API Reference](https://samurai.feefighters.com/developers/php/api-reference) for a full explanation of how this library works with the Samurai API.
