@@ -8,10 +8,22 @@
     public $billing_reference;
     public $customer_reference;
     public $descriptor;
+	public $success;
     public $custom;
+    public $token;
+    public $reference_id;
+    public $transaction_type;
+    public $created_at;
+    public $processor_token;
+    public $payment_method;
+    public $processor_response;
 
     public function getReferenceId ( ) {
       return $this->reference_id;
+    }
+    
+    public function setReferenceId ( $reference_id ) {
+      $this->reference_id = $reference_id;
     }
 
     public function getToken ( ) {
@@ -25,9 +37,17 @@
     public function getCreatedAt ( ) {
       return $this->created_at;
     }
+    
+    public function setCreatedAt ( $created_at ) {
+      $this->created_at = $created_at;
+    }
 
     public function getUpdatedAt ( ) {
       return $this->updated_at;
+    }
+    
+    public function setUpdatedAt ( $updated_at ) {
+      $this->updated_at = $updated_at;
     }
 
     public function getAmount ( ) {
@@ -93,20 +113,59 @@
     public function setProcessorResponse ( $response ) {
       $this->processor_response = $processor_response;
     }
+    
+    public function getSuccess ( ) {
+      return $this->success;
+    }
+
+    public function setSuccess ( $success ) {
+      $this->success = $success;
+    }
+    
+    public function getTransactionType ( ) {
+      return $this->transaction_type;
+    }
+
+    public function setTransactionType ( $transaction_type ) {
+      $this->transaction_type = $transaction_type;
+    }
+    
+    public function getTransactionToken ( ) {
+      return $this->transaction_token;
+    }
+
+    public function setTransactionToken ( $transaction_token ) {
+      $this->transaction_token = $transaction_token;
+    }
+    
+    public function getProcessorToken ( ) {
+      return $this->processor_token;
+    }
+
+    public function setProcessorToken ( $processor_token ) {
+      $this->processor_token = $processor_token;
+    }
+    
+    public function getPaymentMethod ( ) {
+      return $this->payment_method;
+    }
+
+    public function setPaymentMethod ( $payment_method ) {
+      $this->payment_method = $payment_method;
+    }
 
 
     function transactionFromResponse( $samurai_response ) {
       $samurai_transaction = new SamuraiTransaction();
       $samurai_transaction->reference_id = $samurai_response->getField( 'reference_id' );
       $samurai_transaction->token = $samurai_response->getField( 'transaction_token' );
-      $samurai_transaction->type = $samurai_response->getField( 'transaction_type' );
       $samurai_transaction->created_at = $samurai_response->getField( 'created_at' );
       $samurai_transaction->success = $samurai_response->getField( 'success' );      
       $samurai_transaction->currency_code = $samurai_response->getField( 'currency_code' );
       $samurai_transaction->custom = $samurai_response->getField( 'custom' );
-      $samurai_transaction->custom = $samurai_response->getField( 'billing_reference' );
-      $samurai_transaction->custom = $samurai_response->getField( 'customer_reference' );
-      $samurai_transaction->custom = $samurai_response->getField( 'descriptor' );
+      $samurai_transaction->billing_reference = $samurai_response->getField( 'billing_reference' );
+      $samurai_transaction->customer_reference = $samurai_response->getField( 'customer_reference' );
+      $samurai_transaction->descriptor = $samurai_response->getField( 'descriptor' );
       $samurai_transaction->amount = $samurai_response->getField( 'amount' );
       $samurai_transaction->transaction_type = $samurai_response->getField( 'transaction_type' );
       $samurai_transaction->processor_token = $samurai_response->getField( 'processor_token' );
