@@ -2,32 +2,39 @@ Samurai
 =======
 
 If you are an online merchant and using samurai.feefighers.com, this PHP client
-library will make your life easy. Integrate with the samuari.feefighters.com
+library will make your life easy. Integrate with the samurai.feefighters.com
 portal and process transactions.
 
 
 Installation
 ------------
 
-Install Samurai by cloning this github repository
+Install Samurai by cloning this github repository:
 
     git clone git://github.com/FeeFighters/samurai-client-php.git
 
-Otherwise, download the .tar.gz or .zip archive
+Alternatively, you can download the .tar.gz or .zip archive.
+
 
 Configuration
 -------------
 
-You need to tell the client library what your Samurai keys are by defining constants:
+Use the `Samurai::setup()` method to get the Samurai module ready for
+action. You should pass an array, containing your merchant credentials
+as a parameter. Here's an example:
 
-    <?
-      define( 'SAMURAI_MERCHANT_KEY', 'CHANGE TO YOUR MERCHANT KEY' );
-      define( 'SAMURAI_MERCHANT_PASSWORD', 'CHANGE TO YOUR MERCHANT PASSWORD' );
-      define( 'SAMURAI_PROCESSOR_TOKEN', 'CHANGE TO YOUR PROCESSOR TOKEN' );
-      define( 'SAMURAI_LIB_DIRECTORY', dirname(__DIR__).'/samurai-client-php' );
-    ?>
+    Samurai::setup(array(
+      'merchantKey'      => 'your_merchant_key',
+      'merchantPassword' => 'your_merchant_password',
+      'processorToken'   => 'your_default_processor_token'
+    ));
+
+The `processorToken` param is optional. If you set it,
+`Samurai_Processor::theProcessor()` will return the processor with this token. You
+can always call `Samurai_Processor::find('an_arbitrary_processor_token')` to
+retrieve any of your processors.
 
 Samurai API Reference
 ---------------------
 
-See the [API Reference](https://samurai.feefighters.com/developers/api-reference/php) for a full explanation of how this library works with the Samurai API.
+See the [API Reference](https://samurai.feefighters.com/developers/php/api-reference) for a full explanation of how this library works with the Samurai API.

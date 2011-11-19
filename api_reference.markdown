@@ -15,12 +15,11 @@ To use the Samurai API, you'll need a <mark>Merchant Key</mark>, <mark>Merchant 
 Once you have these credentials, you can add them to a file in your project:
 
 ```php
-<?
-  define( 'SAMURAI_MERCHANT_KEY', '[merchant_key]' );
-  define( 'SAMURAI_MERCHANT_PASSWORD', '[merchant_password]' );
-  define( 'SAMURAI_PROCESSOR_TOKEN', '[processor_token]' );
-  define( 'SAMURAI_LIB_DIRECTORY', dirname(__DIR__).'/samurai-client-php' );
-?>
+Samurai::setup(array(
+	'merchantKey'      => '[merchant_key]',
+	'merchantPassword' => '[merchant_password]',
+	'processorToken'   => '[processor_token]'
+));
 ```
 
 
@@ -127,8 +126,8 @@ Since the transparent redirect form submits directly to Samurai, you don’t get
 We’ll only send you non-sensitive data, so you will no be able to pre-populate the sensitive fields (card number and cvv) in the resubmission form.
 
 ```php
-$payment_method = SamuraiPaymentMethod::fetchByToken( $_GET['payment_method_token'] );
-$payment_method->getIsSensitiveDataValid() # => true if the credit_card[card_number] passed checksum
+$paymentMethod = Samurai_PaymentMethod::find($_GET['payment_method_token']);
+echo $paymentMethod->isSensitiveDataValid; # => true if the credit_card[card_number] passed checksum
                                            #    and the cvv (if included) is a number of 3 or 4 digits
 ```
 
@@ -145,7 +144,7 @@ Once you have determined that you’d like to keep a Payment Method in the Samur
 However, if you perform a purchase or authorize transaction with a Payment Method, it will be automatically retained for future use.
 
 ```php
-$payment_method->retain();
+$paymentMethod->retain();
 ```
 
 ### Redacting a Payment Method
@@ -153,7 +152,7 @@ $payment_method->retain();
 It’s important that you redact payment methods whenever you know you won’t need them anymore.  Typically this is after the credit card’s expiration date or when your user has supplied you with a different card to use.
 
 ```php
-$payment_method->redact();
+$paymentMethod->redact();
 ```
 
 
@@ -163,21 +162,13 @@ $payment_method->redact();
 When you’re ready to process a payment, the simplest way to do so is with the `purchase` method.
 
 ```php
-$transaction = new SamuraiTransaction();
-$transaction->setAmount( 20.00 );
-$transaction->setCurrencyCode( 'USD' );
-
-// Optional metadata
-$transaction->setDescriptor( 'Description of the charge' );
-$transaction->setBillingReference( 'String reference for the transaction' );
-$transaction->setCustomerReference( 'A customer identifying string' );
-$transaction->setCustom( 'custom value which will be forwarded to the processor' );
-
-$transaction->setPaymentMethodToken( $samurai_payment_method->getToken() );
-$samurai_processor = new SamuraiProcessor( SAMURAI_PROCESSOR_TOKEN );
-
-// To charge the payment method:
-$response = $transaction->purchase( $samurai_processor );
+$processor = Samurai_Processor::theProcessor();
+$purchase = $processor->purchase($paymentMethodToken, 100.0, array(
+              'billing_reference'  => 'billing data',
+              'customer_reference' => 'customer data',
+              'custom'             => 'custom data',
+              'descriptor'         => 'descriptor',
+            ));
 ```
 
 The following optional parameters are available on a purchase transaction:
@@ -198,7 +189,13 @@ In some cases, a simple purchase isn’t flexible enough.  The alternative is to
 An Authorize doesn’t charge your user’s credit card.  It only reserves the transaction amount and it has the added benefit of telling you if your processor thinks that the transaction will succeed whenever you Capture it.
 
 ```php
-$response = $transaction->authorize( $samurai_processor );
+$processor = Samurai_Processor::theProcessor();
+$authorization = $processor->authorize($paymentMethodToken, 1.0, array(
+									 'billing_reference'  => 'billing data',
+									 'customer_reference' => 'customer data',
+									 'custom'             => 'custom data',
+									 'descriptor'         => 'descriptor',
+								 ));
 ```
 
 See the [purchase transaction](#processing-payments-simple) documentation for details on the optional data parameters.
@@ -208,46 +205,51 @@ See the [purchase transaction](#processing-payments-simple) documentation for de
 You can only execute a capture on a transaction that has previously been authorized.  You’ll need the Transaction Token value from your Authorize command to construct the URL to use for capturing it.
 
 ```php
-$transaction->setAmount( 18.00 );
-$response = $transaction->capture();
-```
-
-### Void
-
-You can only execute a void on a transaction that has previously been captured or purchased.  You’ll need the Transaction Token value from your Authorize command to construct the URL to use for voiding it.
-
-**A transaction can only be voided if it has not settled yet.** Settlement typically takes 24 hours, but it depends on the processor connection you are using. For this reason, it is often convenient to use the [Reverse](#reverse) instead.
-
-```php
-$response = $transaction->void();
-```
-
-### Credit
-
-You can only execute a credit on a transaction that has previously been captured or purchased.  You’ll need the Transaction Token value from your Authorize command to construct the URL to use for crediting it.
-
-**A transaction can only be credited if it has settled.** Settlement typically takes 24 hours, but it depends on the processor connection you are using. For this reason, it is often convenient to use the [Reverse](#reverse) instead.
-
-```php
-$transaction->setAmount( 18.00 );
-$response = $transaction->credit();
+$authorization = Samurai_Transaction::find($referenceId); # get the authorization created previously
+$authorization->capture();	# capture the full amount (or specify an optional amount)
 ```
 
 ### Reverse
 
-You can only execute a reverse on a transaction that has previously been captured or purchased.  You’ll need the Transaction Token value from your Authorize command to construct the URL to use for reversing it.
+A reverse call cancels or refunds a previous transaction.  
 
-*A reverse is equivalent to a void, followed by a full-value credit if the void is unsuccessful.*
+The `$amount` is optional.  If omitted, then the entire transaction will be reversed.
 
-_Documentation coming soon._
+**Note: depending on the settlement status of the transaction, and the behavior of the processor endpoint, this API call may result in a Void, Credit, or Refund transaction.**
 
+```php
+$transaction = Samurai_Transaction::find($referenceId); # get the transaction created previously
+$transaction->reverse();
+```
+
+### Void
+
+The void method is maintained for backwards-compatibility, but it is essentially an alias of the `reverse` API method.
+
+**Note: depending on the settlement status of the transaction, and the behavior of the processor endpoint, this API call may result in a Void, Credit, or Refund transaction.**
+
+```php
+$transaction = Samurai_Transaction::find($referenceId); # get the transaction created previously
+$transaction->void();
+```
+
+### Credit
+
+The credit method is maintained for backwards-compatibility, but it is essentially an alias of the `reverse` API method.
+
+**Note: depending on the settlement status of the transaction, and the behavior of the processor endpoint, this API call may result in a Void, Credit, or Refund transaction.**
+
+```php
+$transaction = Samurai_Transaction::find($referenceId); # get the transaction created previously
+$transaction->credit(); # credit the full amount (or specify an optional amount)
+```
 
 ## Fetching a Transaction
 
-Each time you use one of the transaction processing functions (purchase, authorize, capture, void, credit) you are given a `reference_id` that uniquely identifies the transaction for reporting purposes.  If you want to retrieve transaction data, you can use this fetch method on the `reference_id`.
+Each time you use one of the transaction processing functions (purchase, authorize, capture, void, credit) you are given a `referenceId` that uniquely identifies the transaction for reporting purposes.  If you want to retrieve transaction data, you can use this fetch method on the `referenceId`.
 
 ```php
-$transaction = SamuraiTransaction::fetchByReferenceId( $reference_id );
+$transaction = Samurai_Transaction::find($referenceId);
 ```
 
 
@@ -261,21 +263,80 @@ However, there are situations where using the server-to-server API is appropriat
 
 ### Creating a Payment Method (S2S)
 
-_Documentation coming soon._
+```php
+$paymentMethod = Samurai_PaymentMethod::create(array(
+									 'card_number'  => "4111111111111111",
+									 'expiry_month' => "12",
+									 'expiry_year'  => "2012",
+									 'cvv'          => "123",
+									 'first_name'   => "First",
+									 'last_name'    => "Last",
+									 'address_1'    => "Street Address",
+									 'address_2'    => "Apartment Number",
+									 'city'         => "Chicago",
+									 'zip'          => "60607",
+									 'sandbox'      => true
+								 ));
+```
 
 ### Updating a Payment Method (S2S)
 
-Any payment method that has been retained (either explicitly via the retain function or implicitly via purchase or authorize) cannot be updated any longer.
+Using S2S integration the sensitive data elements of a payment method cannot be modified, so you must
+create a new payment method, copy the non-sensitive elements from the existing payment method and
+save the new payment method.
 
-_Documentation coming soon._
+```php
+$paymentMethod = Samurai_PaymentMethod::create(array(
+									 'card_number'  => "4111111111111111",
+									 'expiry_month' => $oldPaymentMethod->expiryMonth,
+									 'expiry_year'  => $oldPaymentMethod->expiryYear,
+									 'cvv'          => "123",
+									 'first_name'   => $oldPaymentMethod->firstName,
+									 'last_name'    => $oldPaymentMethod->lastName,
+									 'address_1'    => $oldPaymentMethod->address1,
+									 'address_2'    => $oldPaymentMethod->address2,
+									 'city'         => $oldPaymentMethod->city,
+									 'zip'          => $oldPaymentMethod->zip,
+									 'sandbox'      => true
+								 ));
+```
 
+If you wish to modify a non-sensitive data element, such as the address, that can be done
+simply by modifying the element and saving.
 
+```php
+$paymentMethod->firstName = "New First Name";
+$paymentMethod->save();
+```
 
 ## Error Messages
 
-The PaymentMethod and Transaction classes both load errors automatically from the Samurai API, adding them to the `SamuraiResponse` class.  The messages can be queried via `getMessages`, which will return an array of `SamuraiMessage` objects.
+If a request to the Samurai API encounters an HTTP error, the client
+library will throw an instance of `Samurai_Error` with the `message` and
+`name` attributes prividing more information about the error. Note this object represents
+*only* HTTP errors (e.g. 404, 403, 500, etc.) and not errors with the
+submitted information that occurred while creating a payment method or processing a payment. You
+can find these in the resulting payment method/transaction's `errors`
+object.
+
+The HTTP error object's `name` property can be set to one of the
+following error codes:
+
+  * `badRequestError`,
+  * `authenticationRequiredError`,
+  * `authorizationError`,
+  * `notFoundError`,
+  * `notAcceptableError`,
+  * `internalServerError`,
+  * `downForMaintenanceError`,
+  * `unexpectedError`.
+
+The `Samurai_PaymentMethod` and `Samurai_Transaction` classes both load errors automatically from the Samurai API, adding them to their `errors` array. This array comprises of an error context (e.g. `system.general`) as key and an array of error messages for that context as value. Individual error messages are instances of the `Samurai_Message` class and have `context` and `key` properties, as well as a `description()` method, which returns a human-readable description of the error.
 
 ```php
-print_r($response->getMessages());
-print_r($response->getMessages()[0]->getMessage);
+$errors = $transaction->errors['system.general'];
+$error = $errors[0];
+echo $error->context;
+echo $error->key;
+echo $error->description();
 ```
