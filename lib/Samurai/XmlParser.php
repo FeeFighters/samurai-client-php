@@ -43,7 +43,7 @@ class Samurai_XmlParser
           break;
 
         default:
-					if ($node->count()) {
+					if (count($node->children())) {
 						$res = self::normalize($node);
 					} else {
 						// Deal with items that should just be an array of 
