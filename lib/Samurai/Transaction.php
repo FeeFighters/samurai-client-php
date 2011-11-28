@@ -240,6 +240,10 @@ class Samurai_Transaction
       // First take care of property aliases
       case 'token':
         return $this->attributes['transaction_token'];
+			case 'avsResultCode':
+				return $this->avsResultCode();
+			case 'cvvResultCode':
+				return $this->cvvResultCode();
       default:
         $underscoredProp = Samurai_Helpers::underscore($prop);
         if (isset($this->attributes[$underscoredProp])) {
@@ -256,4 +260,24 @@ class Samurai_Transaction
       $this->attributes[$underscoredProp] = $value;
     }
   }
+
+	private function avsResultCode() {
+		$messages = !empty($this->messages['processor.avs_result_code']) 
+							? $this->messages['processor.avs_result_code'] 
+							: $this->messages['gateway.avs_result_code'];
+
+		if(!empty($messages) && is_array($messages)) {
+			return $messages[0]->key;
+		}
+	}
+
+	private function cvvResultCode() {
+		$messages = !empty($this->messages['processor.cvv_result_code']) 
+							? $this->messages['processor.cvv_result_code'] 
+							: $this->messages['gateway.cvv_result_code'];
+
+		if(!empty($messages) && is_array($messages)) {
+			return $messages[0]->key;
+		}
+	}
 }

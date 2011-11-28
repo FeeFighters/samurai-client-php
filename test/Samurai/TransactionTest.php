@@ -58,4 +58,9 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($transaction->isSuccess());
 		$this->assertEquals('The card was declined.', $transaction->errors['processor.transaction'][0]->description);
 	}
+
+	public function testAvsCvvResultCodes() {
+		$this->assertEquals('Y', $this->transaction->avsResultCode);
+		$this->assertEquals('1', $this->transaction->cvvResultCode);
+	}
 }
