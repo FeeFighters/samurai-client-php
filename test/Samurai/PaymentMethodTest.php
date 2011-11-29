@@ -71,7 +71,7 @@ class Samurai_PaymentMethodTest extends PHPUnit_Framework_TestCase
 			'zip'          => '53211',
 			'expiry_month' => 03,
 			'cvv'          => '123',
-			//'card_number'  => '4111111111111111',
+			'card_number'  => null,
 			'address_1'    => '1240 W Monroe #1',
 			'address_2'    => '',
 			'expiry_year'  => '2015',
@@ -84,7 +84,10 @@ class Samurai_PaymentMethodTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($paymentMethod->isSensitiveDataValid);
 		$this->assertInternalType('array', $paymentMethod->errors);
 		$this->assertArrayHasKey('input.card_number', $paymentMethod->errors);
-		$this->assertCount(2, $paymentMethod->errors['input.card_number']);
+		$this->assertEquals(2, count($paymentMethod->errors['input.card_number']));
 		$this->assertInstanceOf('Samurai_Message', $paymentMethod->errors['input.card_number'][0]);
+		$this->assertEquals('error',  $paymentMethod->errors['input.card_number'][0]->subclass);
+		$this->assertEquals('input.card_number',  $paymentMethod->errors['input.card_number'][0]->context);
+		$this->assertEquals('not_numeric',        $paymentMethod->errors['input.card_number'][0]->key);
 	}
 }
