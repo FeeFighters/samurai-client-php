@@ -55,9 +55,19 @@ class Samurai_Message
     'info processor.avs_result_code N'  => 'The address and ZIP do not match.',
 
     // CVV Responses
-    'error input.cvv declined' => 'The CVV code was not correct.',
-    'error input.cvv declined' => 'The CVV code was invalid.',
-    'error input.cvv too_long' => 'The CVV code was too long.',
+    'error input.card_number is_blank'        => 'The card number was blank.',
+    'error input.card_number not_numeric'     => 'The card number was invalid.',
+    'error input.card_number too_short'       => 'The card number was too short.',
+    'error input.card_number too_long'        => 'The card number was too long.',
+    'error input.card_number failed_checksum' => 'The card number was invalid.',
+    'error input.cvv is_blank'                => 'The CVV was blank.',
+    'error input.cvv not_numeric'             => 'The CVV was invalid.',
+    'error input.cvv too_short'               => 'The CVV was too short.',
+    'error input.cvv too_long'                => 'The CVV was too long.',
+    'error input.expiry_month is_blank'       => 'The expiration month was blank.',
+    'error input.expiry_month not_numeric'    => 'The expiration month was invalid.',
+    'error input.expiry_year is_blank'        => 'The expiration year was blank.',
+    'error input.expiry_year not_numeric'     => 'The expiration year was invalid.',
   );
 
   public function __get($prop) {
