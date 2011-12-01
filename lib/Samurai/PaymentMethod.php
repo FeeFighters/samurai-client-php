@@ -125,6 +125,9 @@ class Samurai_PaymentMethod
   private function handleResponse($error, $response) {
     if ($error) {
       $this->attributes['success'] = false;
+      if (isset($response) && isset($response['error'])) {
+        $this->updateAttributes($response['error']);
+      }
       throw $error;
     } else {
       if (isset($response) && isset($response['payment_method'])) {
@@ -147,14 +150,16 @@ class Samurai_PaymentMethod
     $this->messages = array();
     $this->errors = array();
     
-		function byImportance($a, $b) {
-			$order = array('is_blank', 'not_numeric', 'too_short', 'too_long', 'failed_checksum');
-			$a = array_search($a['key'], $order);
-			$b = array_search($b['key'], $order);
-			$a = $a === FALSE ? 0 : $a;
-			$b = $b === FALSE ? 0 : $b;
+		if (!function_exists('byImportance')) {
+			function byImportance($a, $b) {
+				$order = array('is_blank', 'not_numeric', 'too_short', 'too_long', 'failed_checksum');
+				$a = array_search($a['key'], $order);
+				$b = array_search($b['key'], $order);
+				$a = $a === FALSE ? 0 : $a;
+				$b = $b === FALSE ? 0 : $b;
 
-      return ($a < $b ? -1 : ($a > $b ? 1 : 0));
+				return ($a < $b ? -1 : ($a > $b ? 1 : 0));
+			}
 		}
 
 		usort($messages, 'byImportance');
