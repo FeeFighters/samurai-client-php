@@ -28,4 +28,17 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 
 		$this->assertTrue($transaction->isSuccess());
 	}
+
+	public function testFailedPurchaseDueToValidationError() {
+		$paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[card_number]' => ''));
+		$transaction = Samurai_Processor::theProcessor()->purchase($paymentMethod->token, 1.0, array(
+			'descriptor' => 'A test purchase',
+			'custom' => 'optional custom data',
+			'billing_reference' => 'ABC123',
+			'customer_reference' => 'Customer (123)'
+		));
+
+		//print_r($transaction->errors);
+		$this->assertFalse($transaction->isSuccess());
+	}
 }

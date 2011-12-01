@@ -2,8 +2,8 @@
 
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
-function createTestPurchase($amount=1.0) {
-	$paymentMethod = Samurai_TestHelper::createTestPaymentMethod();
+function createTestPurchase($amount = 1.0, $overrides = array()) {
+	$paymentMethod = Samurai_TestHelper::createTestPaymentMethod($overrides);
 	$transaction = Samurai_Processor::theProcessor()->purchase(
 		$paymentMethod->token,
 		$amount,

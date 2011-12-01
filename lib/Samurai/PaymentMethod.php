@@ -147,6 +147,18 @@ class Samurai_PaymentMethod
     $this->messages = array();
     $this->errors = array();
     
+		function byImportance($a, $b) {
+			$order = array('is_blank', 'not_numeric', 'too_short', 'too_long', 'failed_checksum');
+			$a = array_search($a['key'], $order);
+			$b = array_search($b['key'], $order);
+			$a = $a === FALSE ? 0 : $a;
+			$b = $b === FALSE ? 0 : $b;
+
+      return ($a < $b ? -1 : ($a > $b ? 1 : 0));
+		}
+
+		usort($messages, 'byImportance');
+
     foreach ($messages as $message) {
       $message['subclass'] = isset($message['subclass']) ? $message['subclass'] : $message['class'];
       $message['$t']       = isset($message['$t'])       ? $message['$t']       : null;

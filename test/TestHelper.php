@@ -19,7 +19,7 @@ Samurai::setup(array(
 
 class Samurai_TestHelper
 {
-  public static function createTestPaymentMethod() {
+  public static function createTestPaymentMethod($overrides = array()) {
     $params = array(
       'credit_card[first_name]'    => 'John',
       'credit_card[last_name]'     => 'Smith',
@@ -36,6 +36,10 @@ class Samurai_TestHelper
       'merchant_key'               => Samurai::$merchantKey,
       'sandbox'                    => true
     );
+
+		if(!empty($overrides) && is_array($overrides)) {
+			$params = array_merge($params, $overrides);
+		}
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,            'https://api.samurai.feefighters.com/v1/payment_methods');
