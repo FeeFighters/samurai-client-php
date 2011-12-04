@@ -19,9 +19,9 @@ class Samurai_Transaction
   /* -- Properties -- */
 
   private $isNew;
-  private $attributes = array();
   private $connection;
 
+  public $attributes = array();
   public $messages = array();
   public $errors = array();
 
