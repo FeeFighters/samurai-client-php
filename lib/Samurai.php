@@ -45,3 +45,4 @@ require_once dirname(__FILE__) . '/Samurai/Connection.php';
 require_once dirname(__FILE__) . '/Samurai/Transaction.php';
 require_once dirname(__FILE__) . '/Samurai/PaymentMethod.php';
 require_once dirname(__FILE__) . '/Samurai/Processor.php';
+require_once dirname(__FILE__) . '/Samurai/Views.php';
