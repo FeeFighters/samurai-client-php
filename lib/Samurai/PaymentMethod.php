@@ -247,6 +247,14 @@ class Samurai_PaymentMethod
     return $attr;
   }
   
+	/*
+	 * Checks if there are any errors in the $errors array
+	 */
+
+	public function hasErrors() {
+		return !empty($this->errors);
+	}
+
   /* -- Accessors -- */
 
   /*
