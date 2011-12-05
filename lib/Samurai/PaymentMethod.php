@@ -267,7 +267,7 @@ class Samurai_PaymentMethod
   public function __get($prop) {
     switch($prop) {
       case 'token':
-        return $this->attributes['payment_method_token'];
+        return isset($this->attributes['payment_method_token']) ? $this->attributes['payment_method_token'] : null;
       case 'customJsonData':
         if (isset($this->attributes['custom']) && is_string($this->attributes['custom'])) {
           $custom = json_decode($this->attributes['custom'], true);
