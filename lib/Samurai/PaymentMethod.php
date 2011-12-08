@@ -128,7 +128,6 @@ class Samurai_PaymentMethod
       if (isset($response) && isset($response['error'])) {
         $this->updateAttributes($response['error']);
       }
-      throw $error;
     } else {
       if (isset($response) && isset($response['payment_method'])) {
         $this->updateAttributes($response['payment_method']);

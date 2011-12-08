@@ -135,7 +135,6 @@ class Samurai_Transaction
       if (isset($response) && isset($response['error'])) {
         $this->updateAttributes($response['error']);
       }
-			throw $error;
     } else {
       if (isset($response) && isset($response['transaction'])) {
         $this->updateAttributes($response['transaction']);
