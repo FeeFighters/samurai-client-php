@@ -48,3 +48,19 @@ require_once dirname(__FILE__) . '/Samurai/Transaction.php';
 require_once dirname(__FILE__) . '/Samurai/PaymentMethod.php';
 require_once dirname(__FILE__) . '/Samurai/Processor.php';
 require_once dirname(__FILE__) . '/Samurai/Views.php';
+
+if (version_compare(PHP_VERSION, '5.2.1', '<')) {
+  throw new Exception('PHP version >= 5.2.1 required');
+}
+
+
+function checkDependencies() {
+  $extensions = array('curl', 'SimpleXML', 'openssl', 'curl');
+  foreach ($extensions AS $ext) {
+    if (!extension_loaded($ext)) {
+      throw new Exception('samurai-client-php requires the ' . $ext . ' extension.');
+    }
+  }
+}
+
+checkDependencies();
