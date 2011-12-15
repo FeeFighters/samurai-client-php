@@ -53,6 +53,12 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->transaction->isSuccess());
 	}
 
+	public function testReverseWithPartialAmount() {
+		$this->transaction->reverse(0.5);
+		$this->assertContains($this->transaction->transactionType, array('Credit', 'Void'));
+		$this->assertTrue($this->transaction->isSuccess());
+	}
+
 	public function testDeclinedPurchase() {
 		$transaction = createTestPurchase(1.02);
 		$this->assertFalse($transaction->isSuccess());

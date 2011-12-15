@@ -14,7 +14,8 @@ Samurai::setup(array(
   'site'             => isset($_ENV['SITE'])              ? $_ENV['SITE']              : 'https://api.samurai.feefighters.com/v1/',
   'merchantKey'      => isset($_ENV['MERCHANT_KEY'])      ? $_ENV['MERCHANT_KEY']      : 'a1ebafb6da5238fb8a3ac9f6',
   'merchantPassword' => isset($_ENV['MERCHANT_PASSWORD']) ? $_ENV['MERCHANT_PASSWORD'] : 'ae1aa640f6b735c4730fbb56',
-  'processorToken'   => isset($_ENV['PROCESSOR_TOKEN'])   ? $_ENV['PROCESSOR_TOKEN']   : '5a0e1ca1e5a11a2997bbf912'
+  'processorToken'   => isset($_ENV['PROCESSOR_TOKEN'])   ? $_ENV['PROCESSOR_TOKEN']   : '5a0e1ca1e5a11a2997bbf912',
+  'debug'            => true
 ));
 
 class Samurai_TestHelper

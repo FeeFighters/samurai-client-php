@@ -72,16 +72,23 @@ class Samurai_Connection
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-		//echo "-- request with data: \n", $dataString;
-		//echo "-- request to: \n", Samurai::$site . $path;
+    if (Samurai::$debug) {
+      echo "\n--------- Request ----------\n";
+		  echo "-- url: ", Samurai::$site . $path, "\n";
+		  echo "-- data: ", var_export($data), "\n";
+		  echo "-- dataString: ", $dataString, "\n";		  
+		  echo "\n-----------------------------\n";
+		}
 
     $res = curl_exec($ch);
 		list($header, $body) = explode("\r\n\r\n", $res, 2);
 
-		//echo "\n--------- Response ----------\n";
-		//print_r($header);
-		//print_r($body);
-		//echo "\n--------- /Response ----------\n";
+    if (Samurai::$debug) {
+  		echo "\n--------- Response ----------\n";
+  		print_r($header);
+  		print_r($body);
+  		echo "\n-----------------------------\n";
+    }
 
     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$error = self::errorFromStatus($statusCode);

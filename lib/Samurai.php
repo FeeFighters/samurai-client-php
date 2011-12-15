@@ -2,13 +2,14 @@
 
 abstract class Samurai 
 {
-  const VERSION = '0.1.3';
+  const VERSION = '0.1.4';
 
   public static $merchantKey;
   public static $merchantPassword;
   public static $processorToken;
   public static $site = 'https://api.samurai.feefighters.com/v1/';
   public static $sandbox = false;
+  public static $debug = false;  
 
   /*
    * Sets up the default connection parameters for all requests to the Samurai API.
@@ -27,7 +28,8 @@ abstract class Samurai
                   'merchantPassword', 
                   'processorToken', 
                   'site', 
-                  'sandbox');
+                  'sandbox',
+                  'debug');
 
     foreach ($options as $option => $value) {
       if (in_array($option, $keys)) {
