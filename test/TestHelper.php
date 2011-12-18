@@ -22,8 +22,8 @@ class Samurai_TestHelper
 {
   public static function createTestPaymentMethod($overrides = array()) {
     $params = array(
-      'credit_card[first_name]'    => 'John',
-      'credit_card[last_name]'     => 'Smith',
+      'credit_card[first_name]'    => 'FirstName',
+      'credit_card[last_name]'     => 'LastName',
       'credit_card[address_1]'     => '1000 1st Av',
       'credit_card[address_2]'     => '',
       'credit_card[city]'          => 'Chicago',
