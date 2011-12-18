@@ -97,7 +97,7 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 	public function testCreditFailuresShouldReturnInputAmountInvalid() {
 	  $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 100.00);
 	  $transaction->credit(100.10);
-		$this->assertTrue( $transaction->isSuccess() );
+		$this->assertFalse( $transaction->isSuccess() );
 		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
 
