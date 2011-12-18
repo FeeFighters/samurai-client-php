@@ -87,6 +87,7 @@ class Samurai_Connection
     if (Samurai::$debug) {
   		echo "\n--------- Response ----------\n";
   		print_r($header);
+  		echo "\n";
   		print_r($body);
   		echo "\n-----------------------------\n";
     }

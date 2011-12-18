@@ -32,7 +32,7 @@ class Samurai_Message
     'error input.merchant_login invalid'      => 'The merchant ID is not valid or active.',
     'error input.store_number invalid'        => 'Invalid Store Number.',
     'error processor.bank_info invalid'       => 'Invalid banking information.',
-    'error processor.transaction not_allowed' => 'Merchant can not accept this card.',
+    'error processor.transaction not_allowed' => 'This transaction type is not allowed.',
     'error processor.transaction type_invalid'    => 'Requested transaction type is not allowed for this card/merchant.',
     'error processor.transaction method_invalid'  => 'The requested transaction could not be performed for this merchant.',
     'error input.amount exceeds_limit'            => 'The maximum transaction amount was exceeded.',

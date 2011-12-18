@@ -50,7 +50,7 @@ class Samurai_Transaction
    * Captures an authorization. Optionally specify an `$amount` to do a partial capture of the initial
    * authorization. The default is to capture the full amount of the authorization.
    */
-  public function capture($amount, $options = array()) {
+  public function capture($amount = null, $options = array()) {
     $amount = isset($amount) ? $amount : $this->amount;
     $options = array_merge($options, array('amount' => $amount));
     list($error, $response) = $this->connection->post($this->pathFor('capture'), $options);

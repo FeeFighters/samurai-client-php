@@ -1,5 +1,4 @@
 <?php
-
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
 
 class Samurai_PaymentMethodTest extends PHPUnit_Framework_TestCase

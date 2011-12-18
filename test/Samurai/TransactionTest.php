@@ -1,16 +1,5 @@
 <?php
-
 require_once realpath(dirname(__FILE__)) . '/../TestHelper.php';
-
-function createTestPurchase($amount = 1.0, $overrides = array()) {
-	$paymentMethod = Samurai_TestHelper::createTestPaymentMethod($overrides);
-	$transaction = Samurai_Processor::theProcessor()->purchase(
-		$paymentMethod->token,
-		$amount,
-		array('billing_reference' => rand(0, 1000))
-	);
-	return $transaction;
-}
 
 class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 {
@@ -46,11 +35,12 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse( $transaction->isSuccess() );
 		$this->assertEquals( 'The card was declined.', $transaction->errors['processor.transaction'][0]->description );
 	}
+
 	public function testCaptureFailuresShouldReturnInputAmountInvalid() {
 	  $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 100.00);
 	  $transaction->capture(100.10);
 		$this->assertFalse( $transaction->isSuccess() );
-		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['processor.transaction'][0]->description );
+		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
 
 	public function testReverseOnCaptureShouldBeSuccessful() {
@@ -74,11 +64,12 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 	  $transaction->reverse();
 		$this->assertTrue( $transaction->isSuccess() );
 	}
-	public function testReverseOnAuthorizefailuresShouldReturnInputAmountInvalid() {
-	  $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 100.00);
+
+	public function testReverseFailuresShouldReturnInputAmountInvalid() {
+	  $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 100.00);
 	  $transaction->reverse(100.10);
-		$this->assertTrue( $transaction->isSuccess() );
-		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['processor.transaction'][0]->description );
+		$this->assertFalse( $transaction->isSuccess() );
+		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
 
 	public function testCreditOnCaptureShouldBeSuccessful() {
@@ -102,11 +93,12 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 	  $transaction->credit();
 		$this->assertTrue( $transaction->isSuccess() );
 	}
-	public function testCreditOnAuthorizefailuresShouldReturnInputAmountInvalid() {
-	  $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 100.00);
+
+	public function testCreditFailuresShouldReturnInputAmountInvalid() {
+	  $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 100.00);
 	  $transaction->credit(100.10);
 		$this->assertTrue( $transaction->isSuccess() );
-		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['processor.transaction'][0]->description );
+		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
 
 	public function testVoidOnAuthorizedShouldBeSuccessful() {
@@ -119,4 +111,5 @@ class Samurai_TransactionTest extends PHPUnit_Framework_TestCase
 	  $transaction->void();
 		$this->assertTrue( $transaction->isSuccess() );
 	}
+
 }
