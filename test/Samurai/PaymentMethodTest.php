@@ -225,15 +225,6 @@ class Samurai_PaymentMethodTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals( false, $pm->isSensitiveDataValid );
 		$this->assertEquals( 'The CVV was too long.', $pm->errors['input.cvv'][0]->description );
 	}
-	public function testS2SUpdateFailOnInputCvvShouldReturnNotNumeric() {
-		$this->paymentMethod = Samurai_PaymentMethod::create($this->params);
-	  $this->updateParams['cvv'] = 'abcd';
-		$this->paymentMethod->updateAttributes($this->updateParams);
-		$this->paymentMethod->save();
-	  $pm = Samurai_PaymentMethod::find($this->paymentMethod->token);
-		$this->assertEquals( false, $pm->isSensitiveDataValid );
-		$this->assertEquals( 'The CVV was invalid.', $pm->errors['input.cvv'][0]->description );
-	}
 
 	public function testS2SUpdateFailOnInputExpiryMonthShouldReturnIsBlank() {
 		$this->paymentMethod = Samurai_PaymentMethod::create($this->params);

@@ -5,7 +5,9 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 {
   public function setUp() {
     $this->transactionAttribs = array(
-  		'descriptor' => 'descriptor',
+  		'description' => 'description',
+  		'descriptor_name' => 'descriptor_name',
+  		'descriptor_phone' => 'descriptor_phone',
   		'custom' => 'custom_data',
   		'billing_reference' => 'ABC123'.rand(0, 1000),
   		'customer_reference' => 'Customer (123)'
@@ -29,11 +31,14 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 		$transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.0, $this->transactionAttribs);
 
 		$this->assertTrue( $transaction->isSuccess() );
-	  $this->assertEquals( $this->transactionAttribs['descriptor'], $transaction->descriptor );
+	  $this->assertEquals( $this->transactionAttribs['description'], $transaction->description );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_name'], $transaction->descriptor_name );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_phone'], $transaction->descriptor_phone );
 	  $this->assertEquals( $this->transactionAttribs['custom'], $transaction->custom );
 	  $this->assertEquals( $this->transactionAttribs['billing_reference'], $transaction->billing_reference );
 	  $this->assertEquals( $this->transactionAttribs['customer_reference'], $transaction->customer_reference );
 	}
+	
 	public function testPurchaseFailuresShouldReturnProcessorTransactionDeclined() {
 		$transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.02, $this->transactionAttribs);
 		$this->assertFalse( $transaction->isSuccess() );
@@ -44,20 +49,7 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse( $transaction->isSuccess() );
 		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
-	/*
-  public function testPurchaseFailuresShouldReturnInputCardNumberFailedChecksum() {
-    $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[card_number]' => '1234123412341234'));
-    $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.00, $this->transactionAttribs);
-    $this->assertFalse( $transaction->isSuccess() );
-    $this->assertEquals( 'The card number was invalid.', $transaction->errors['input.card_number'][0]->description );
-  }
-  public function testPurchaseFailuresShouldReturnInputCardNumberInvalid() {
-    $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[card_number]' => '5105105105105100'));
-    $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.00, $this->transactionAttribs);
-    $this->assertFalse( $transaction->isSuccess() );
-    $this->assertEquals( 'The card number was invalid.', $transaction->errors['input.card_number'][0]->description );
-  }
-  */
+
 	public function testPurchaseCvvResponsesShouldReturnProcessorCvvResultCodeM() {
     $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[cvv]' => '111'));
     $transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.00, $this->transactionAttribs);
@@ -105,7 +97,9 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 		$transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 1.0, $this->transactionAttribs);
 
 		$this->assertTrue( $transaction->isSuccess() );
-	  $this->assertEquals( $this->transactionAttribs['descriptor'], $transaction->descriptor );
+	  $this->assertEquals( $this->transactionAttribs['description'], $transaction->description );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_name'], $transaction->descriptor_name );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_phone'], $transaction->descriptor_phone );
 	  $this->assertEquals( $this->transactionAttribs['custom'], $transaction->custom );
 	  $this->assertEquals( $this->transactionAttribs['billing_reference'], $transaction->billing_reference );
 	  $this->assertEquals( $this->transactionAttribs['customer_reference'], $transaction->customer_reference );
@@ -120,20 +114,7 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse( $transaction->isSuccess() );
 		$this->assertEquals( 'The transaction amount was invalid.', $transaction->errors['input.amount'][0]->description );
 	}
-	/*
-  public function testAuthorizeFailuresShouldReturnInputCardNumberFailedChecksum() {
-    $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[card_number]' => '1234123412341234'));
-    $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 1.00, $this->transactionAttribs);
-    $this->assertFalse( $transaction->isSuccess() );
-    $this->assertEquals( 'The card number was invalid.', $transaction->errors['input.card_number'][0]->description );
-  }
-  public function testAuthorizeFailuresShouldReturnInputCardNumberInvalid() {
-    $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[card_number]' => '5105105105105100'));
-    $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 1.00, $this->transactionAttribs);
-    $this->assertFalse( $transaction->isSuccess() );
-    $this->assertEquals( 'The card number was invalid.', $transaction->errors['input.card_number'][0]->description );
-  }
-  */
+	
 	public function testAuthorizeCvvResponsesShouldReturnProcessorCvvResultCodeM() {
     $this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod(array('credit_card[cvv]' => '111'));
     $transaction = Samurai_Processor::theProcessor()->authorize($this->paymentMethod->token, 1.00, $this->transactionAttribs);
