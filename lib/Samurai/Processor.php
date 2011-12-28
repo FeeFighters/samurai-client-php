@@ -43,7 +43,9 @@ class Samurai_Processor
    * * `$paymentMethodToken`: token identifying the payment method to authorize
    * * `$amount`: amount to authorize
    * * `$options`: an optional array of additional values to pass in. Accepted values are:
-   *   * `descriptor`: descriptor for the transaction
+   *   * `description`: description for the transaction
+   *   * `descriptor_name`: descriptor_name for the transaction
+   *   * `descriptor_phone`: descriptor_phone for the transaction
    *   * `custom`: custom data, this data does not get passed to the processor, it is stored within `api.samurai.feefighters.com` only
    *   * `customer_reference`: an identifier for the customer, this will appear in the processor if supported
    *   * `billing_reference`: an identifier for the purchase, this will appear in the processor if supported
@@ -64,7 +66,9 @@ class Samurai_Processor
    * * `$amount`: amount to authorize
    *
    * * `$options`: an optional array of additional values to pass in. Accepted values are:
-   *   * `descriptor`: descriptor for the transaction
+   *   * `description`: description for the transaction
+   *   * `descriptor_name`: descriptor_name for the transaction
+   *   * `descriptor_phone`: descriptor_phone for the transaction
    *   * `custom`: custom data, this data does not get passed to the processor, it is stored within api.samurai.feefighters.com only
    *   * `customer_reference`: an identifier for the customer, this will appear in the processor if supported
    *   * `billing_reference`: an identifier for the purchase, this will appear in the processor if supported
