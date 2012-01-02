@@ -49,6 +49,7 @@ class Samurai_Processor
    *   * `custom`: custom data, this data does not get passed to the processor, it is stored within `api.samurai.feefighters.com` only
    *   * `customer_reference`: an identifier for the customer, this will appear in the processor if supported
    *   * `billing_reference`: an identifier for the purchase, this will appear in the processor if supported
+   *   * `currency_code`: the currency code used for this transaction (eg, USD)
    *
    * Returns a Samurai_Transaction containing the processor's response.
    */
@@ -72,6 +73,7 @@ class Samurai_Processor
    *   * `custom`: custom data, this data does not get passed to the processor, it is stored within api.samurai.feefighters.com only
    *   * `customer_reference`: an identifier for the customer, this will appear in the processor if supported
    *   * `billing_reference`: an identifier for the purchase, this will appear in the processor if supported
+   *   * `currency_code`: the currency code used for this transaction (eg, USD)
    *
    * Returns a Samurai.Transaction containing the processor's response.
    */
@@ -96,6 +98,7 @@ class Samurai_Processor
    * according to spec.
    */
   private function prepareTransactionData($data) {
+    if (!$data['currency_code'] || $data['currency_code']=='') { $data['currency_code'] = 'USD'; }
     return array('transaction' => $data);
   }
 

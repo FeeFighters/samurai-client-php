@@ -10,7 +10,8 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
   		'descriptor_phone' => 'descriptor_phone',
   		'custom' => 'custom_data',
   		'billing_reference' => 'ABC123'.rand(0, 1000),
-  		'customer_reference' => 'Customer (123)'
+  		'customer_reference' => 'Customer (123)',
+  		'currency_code' => 'USD'
   	);
   	$this->paymentMethod = Samurai_TestHelper::createTestPaymentMethod();
   }
@@ -37,8 +38,22 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 	  $this->assertEquals( $this->transactionAttribs['custom'], $transaction->custom );
 	  $this->assertEquals( $this->transactionAttribs['billing_reference'], $transaction->billing_reference );
 	  $this->assertEquals( $this->transactionAttribs['customer_reference'], $transaction->customer_reference );
+	  $this->assertEquals( $this->transactionAttribs['currency_code'], $transaction->currency_code );
 	}
-	
+	public function testPurchaseShouldBeSuccessfulWithoutCurrencyCode() {
+	  $this->transactionAttribs['currency_code'] = '';
+		$transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.0, $this->transactionAttribs);
+
+		$this->assertTrue( $transaction->isSuccess() );
+	  $this->assertEquals( $this->transactionAttribs['description'], $transaction->description );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_name'], $transaction->descriptor_name );
+	  $this->assertEquals( $this->transactionAttribs['descriptor_phone'], $transaction->descriptor_phone );
+	  $this->assertEquals( $this->transactionAttribs['custom'], $transaction->custom );
+	  $this->assertEquals( $this->transactionAttribs['billing_reference'], $transaction->billing_reference );
+	  $this->assertEquals( $this->transactionAttribs['customer_reference'], $transaction->customer_reference );
+    $this->assertEquals( 'USD', $transaction->currency_code );
+	}
+
 	public function testPurchaseFailuresShouldReturnProcessorTransactionDeclined() {
 		$transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.02, $this->transactionAttribs);
 		$this->assertFalse( $transaction->isSuccess() );
