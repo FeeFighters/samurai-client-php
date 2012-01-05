@@ -98,7 +98,7 @@ class Samurai_Processor
    * according to spec.
    */
   private function prepareTransactionData($data) {
-    if (!$data['currency_code'] || $data['currency_code']=='') { $data['currency_code'] = 'USD'; }
+    if (!isset($data['currency_code']) || $data['currency_code']=='') { $data['currency_code'] = 'USD'; }
     return array('transaction' => $data);
   }
 

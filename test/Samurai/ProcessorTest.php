@@ -41,7 +41,7 @@ class Samurai_ProcessorTest extends PHPUnit_Framework_TestCase
 	  $this->assertEquals( $this->transactionAttribs['currency_code'], $transaction->currency_code );
 	}
 	public function testPurchaseShouldBeSuccessfulWithoutCurrencyCode() {
-	  $this->transactionAttribs['currency_code'] = '';
+	  unset($this->transactionAttribs['currency_code']);
 		$transaction = Samurai_Processor::theProcessor()->purchase($this->paymentMethod->token, 1.0, $this->transactionAttribs);
 
 		$this->assertTrue( $transaction->isSuccess() );
