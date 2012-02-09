@@ -8,7 +8,6 @@ abstract class Samurai
   public static $merchantPassword;
   public static $processorToken;
   public static $site = 'https://api.samurai.feefighters.com/v1/';
-  public static $sandbox = false;
   public static $debug = false;  
 
   /*
@@ -19,8 +18,6 @@ abstract class Samurai
    *   * `merchantPassword`: Your merchant password. Required.
    *   * `processorToken`: Your default processor token. Optional.
    *   * `site`: Root URL to Samurai's API. Default: https://api.samurai.feefighters.com/v1/
-   *   * `sandbox`: Tells samurai to include the sandbox=true parameter with payment method requests, 
-   *     so you can execute tests with these payment methods on the sandbox processor. Default: false
    *
    */
   public static function setup($options) {
@@ -28,7 +25,6 @@ abstract class Samurai
                   'merchantPassword', 
                   'processorToken', 
                   'site', 
-                  'sandbox',
                   'debug');
 
     foreach ($options as $option => $value) {

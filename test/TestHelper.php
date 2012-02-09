@@ -10,7 +10,6 @@ set_include_path(
 require_once 'Samurai.php';
 
 Samurai::setup(array(
-  'sandbox'          => true,
   'site'             => isset($_ENV['SITE'])              ? $_ENV['SITE']              : 'https://api.samurai.feefighters.com/v1/',
   'merchantKey'      => isset($_ENV['MERCHANT_KEY'])      ? $_ENV['MERCHANT_KEY']      : 'a1ebafb6da5238fb8a3ac9f6',
   'merchantPassword' => isset($_ENV['MERCHANT_PASSWORD']) ? $_ENV['MERCHANT_PASSWORD'] : 'ae1aa640f6b735c4730fbb56',
@@ -34,8 +33,7 @@ class Samurai_TestHelper
       'credit_card[expiry_month]'  => '05',
       'credit_card[expiry_year]'   => '2014',
       'redirect_url'               => 'http://yourdomain.com/anywhere',
-      'merchant_key'               => Samurai::$merchantKey,
-      'sandbox'                    => true
+      'merchant_key'               => Samurai::$merchantKey
     );
 
 		if(!empty($overrides) && is_array($overrides)) {

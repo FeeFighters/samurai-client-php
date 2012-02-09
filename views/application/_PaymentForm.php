@@ -11,7 +11,6 @@ $paymentMethod = isset($paymentMethod) ? $paymentMethod : new Samurai_PaymentMet
 	<fieldset>
 		<input name="redirect_url" type="hidden" value="<?php echo $redirectUrl ?>" />
 		<input name="merchant_key" type="hidden" value="<?php echo Samurai::$merchantKey ?>" />
-		<input name="sandbox" type="hidden" value="<?php echo Samurai::$sandbox ?>" />
 		<?php if ($paymentMethod->token): ?><input name="payment_method_token" type="hidden" value="<?php echo $paymentMethod->token ?>" /><?php endif; ?>
 	</fieldset>
 

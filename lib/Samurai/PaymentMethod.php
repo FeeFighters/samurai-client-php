@@ -14,7 +14,6 @@ class Samurai_PaymentMethod
                                          , 'expiry_month'
                                          , 'expiry_year'
                                          , 'custom'
-                                         , 'sandbox'
                                          );
 
   /* -- Properties -- */
@@ -56,10 +55,6 @@ class Samurai_PaymentMethod
    * object to save it.
    */
   public function __construct($attributes = array()) {
-    if(Samurai::$sandbox) {
-      $attributes = array_merge($attributes, array('sandbox' => true));
-    }
-
     $this->attributes = array_merge($this->attributes, $attributes);
     $this->isNew = !isset($attributes['payment_method_token']);
     $this->connection = Samurai_Connection::instance();
